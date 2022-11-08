@@ -75,6 +75,7 @@ public class HomebankingApplication {
 
 			//ClientLoan clientLoan1 = new ClientLoan(500000,new ArrayList<>(Arrays.asList(6,12,24,48)),cliente1,loan1);
 			// commit
+			// commit
 
 		};
 	}
