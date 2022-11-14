@@ -73,11 +73,11 @@ public class TransactionService {
         }
         //Crear transacción “DEBIT” asociada a la cuenta de origen
         Account accFrom = accountRepository.findByNumber(accountFrom).orElse(null);
-        Transaction debit = new Transaction(TransactionType.DEBIT,-amount,description + " transfered money to "+ accountTo, LocalDateTime.now(),accFrom);
+        Transaction debit = new Transaction(TransactionType.DEBIT,-amount,description + " transfered money to "+ accountTo, accFrom);
 
         // Crear transaccion “CREDIT” asociada a la cuenta de destino.
         Account accTo = accountRepository.findByNumber(accountTo).orElse(null);
-        Transaction credit = new Transaction(TransactionType.CREDIT,amount,description + " transfered money from "+ accountFrom,LocalDateTime.now(),accTo);
+        Transaction credit = new Transaction(TransactionType.CREDIT,amount,description + " transfered money from "+ accountFrom,accTo);
         //A la cuenta de origen se le restará el monto indicado en la petición
         accFrom.setBalance(availableAmountFrom-amount);
         // cuenta de destino se le sumará el mismo monto.

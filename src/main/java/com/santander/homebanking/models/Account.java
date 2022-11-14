@@ -2,6 +2,8 @@ package com.santander.homebanking.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,12 +11,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "native")
     @GenericGenerator(name = "native",strategy = "native")
     private long id;
     private String number;
+    @CreatedDate
     @Column(name="creation_date")
     private LocalDateTime creationDate;
     private double balance;
@@ -34,9 +38,8 @@ public class Account {
 
     public Account(){}
 
-    public Account(String number, LocalDateTime creationDate, double balance, Client client) {
+    public Account(String number, double balance, Client client) {
         this.number = number;
-        this.creationDate = creationDate;
         this.balance = balance;
         this.client = client;
     }
