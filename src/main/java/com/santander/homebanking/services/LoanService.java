@@ -75,7 +75,7 @@ public class LoanService {
         ClientLoan newClientLoan = new ClientLoan(incrementedAmount,payments,client,loan);
 //        Se debe crear una transacción “CREDIT” asociada a la cuenta de destino (el monto debe quedar positivo) con la descripción concatenando el nombre del préstamo y la frase “loan approved”
         String loanDescription = loan.getName() + " loan aproved.";
-        Transaction credit = new Transaction(TransactionType.CREDIT,amount,loanDescription, LocalDateTime.now(),accountTo);
+        Transaction credit = new Transaction(TransactionType.CREDIT,amount,loanDescription,accountTo);
 //        Se debe actualizar la cuenta de destino sumando el monto solicitado.
         Double newBalance = accountTo.getBalance() + amount;
         accountTo.setBalance(newBalance);

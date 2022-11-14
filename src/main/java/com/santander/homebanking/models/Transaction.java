@@ -1,11 +1,14 @@
 package com.santander.homebanking.models;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name="transactions")
+@EntityListeners(AuditingEntityListener.class)
 public class Transaction {
 
     @Id
@@ -17,6 +20,7 @@ public class Transaction {
     private String description;
 
     @Column(name="creation_date")
+    @CreatedDate
     private LocalDateTime date;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
@@ -24,11 +28,10 @@ public class Transaction {
 
     public Transaction(){}
 
-    public Transaction(TransactionType type, Double amount, String description, LocalDateTime date, Account account) {
+    public Transaction(TransactionType type, Double amount, String description, Account account) {
         this.type = type;
         this.amount = amount;
         this.description = description;
-        this.date = date;
         this.account = account;
     }
 
