@@ -52,7 +52,7 @@ public class LoanService {
             return new ResponseEntity<>(getMensaje("loan.createLoan.missingLoan"), HttpStatus.FORBIDDEN);
         }
 //        Verificar que el monto solicitado no exceda el monto máximo del préstamo
-        if(amount > loan.getMaxAmmount()){
+        if(amount > loan.getMaxAmount()){
             return new ResponseEntity<>(getMensaje("loan.createLoan.invalidAmount"), HttpStatus.FORBIDDEN);
         }
 //        Verifica que la cantidad de cuotas se encuentre entre las disponibles del préstamo
