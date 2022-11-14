@@ -11,5 +11,5 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface LoanRepository extends JpaRepository<Loan,Long> {
     List<Loan> findByNameOrderByNameDesc(String name);
-    Optional<Loan> findByMaxAmmount(double maxamount);
+    Optional<Loan> findByMaxAmount(double maxamount);
 }
