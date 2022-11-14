@@ -1,10 +1,7 @@
 package com.santander.homebanking;
 
 import com.santander.homebanking.models.*;
-import com.santander.homebanking.repositories.AccountRepository;
-import com.santander.homebanking.repositories.ClientRepository;
-import com.santander.homebanking.repositories.LoanRepository;
-import com.santander.homebanking.repositories.TransactionRepository;
+import com.santander.homebanking.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -30,7 +29,7 @@ public class HomebankingApplication {
 	PasswordEncoder passwordEncoder;
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository) {
+	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, DiscountRepository discountRepository, CashbackRepository cashbackRepository) {
 		return (args) -> {
 
 			// save a couple of customers
@@ -79,6 +78,41 @@ public class HomebankingApplication {
 			// commit
 			// commit
 
+
+			Map<CardColor,Double> mapG = new HashMap<>();
+			mapG.put(CardColor.GOLD,50.0);
+			Map<CardColor,Double> mapS = new HashMap<>();
+			mapS.put(CardColor.SILVER,100.0);
+			Map<CardColor,Double> mapT = new HashMap<>();
+			mapT.put(CardColor.TITANIUM,200.0);
+			Discount discount1 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapG);
+			Discount discount2 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapS);
+			Discount discount3 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapT);
+			Discount discount4 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapG);
+			Discount discount5 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapS);
+			Discount discount6 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapT);
+
+			discountRepository.save(discount1);
+			discountRepository.save(discount2);
+			discountRepository.save(discount3);
+			discountRepository.save(discount4);
+			discountRepository.save(discount5);
+			discountRepository.save(discount6);
+
+
+			Cashback cashback1 = new Cashback(CardColor.TITANIUM,CardType.DEBIT,0.01);
+			Cashback cashback2 = new Cashback(CardColor.SILVER,CardType.DEBIT,0.005);
+			Cashback cashback3 = new Cashback(CardColor.GOLD,CardType.DEBIT,0.002);
+			Cashback cashback4 = new Cashback(CardColor.TITANIUM,CardType.CREDIT,0.03);
+			Cashback cashback5 = new Cashback(CardColor.SILVER,CardType.CREDIT,0.015);
+			Cashback cashback6 = new Cashback(CardColor.GOLD,CardType.CREDIT,0.007);
+
+			cashbackRepository.save(cashback1);
+			cashbackRepository.save(cashback2);
+			cashbackRepository.save(cashback3);
+			cashbackRepository.save(cashback4);
+			cashbackRepository.save(cashback5);
+			cashbackRepository.save(cashback6);
 		};
 	}
 }
