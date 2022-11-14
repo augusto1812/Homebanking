@@ -48,7 +48,7 @@ public class AccountService {
             Integer randomI  = random.nextInt(999999 - 1) +1;
             number = String.format("VIN%0"+ 8 + "d",randomI);
         }
-        return new Account(number, LocalDateTime.now(),0, null);
+        return new Account(number, 0, null);
     }
 
     public List<AccountDTO> getCurrentClientAccounts(Authentication authentication){

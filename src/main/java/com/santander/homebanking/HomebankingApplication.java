@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class HomebankingApplication {
 
 	public static void main(String[] args) {
@@ -37,27 +39,27 @@ public class HomebankingApplication {
 			Client cliente1 = new Client("Jack", "Bauer", "JackBauer@hotmail.com", passwordEncoder.encode("123"));
 			repository.save(cliente1);
 
-			Account cuenta1 = new Account("VIN007",fechaHoy,5000,cliente1);
-			Account cuenta2 = new Account("VIN008",fechaManiana,7500,cliente1);
+			Account cuenta1 = new Account("VIN007",5000,cliente1);
+			Account cuenta2 = new Account("VIN008",7500,cliente1);
 			accountRepository.save(cuenta1);
 			accountRepository.save(cuenta2);
 			cliente1.addAccount(cuenta1);
 
-			transactionRepository.save(new Transaction(TransactionType.CREDIT, 200.00, "prueba01", fechaHoy,cuenta1));
-			transactionRepository.save(new Transaction(TransactionType.DEBIT, 2000.00, "prueba002", fechaHoy,cuenta1));
-			transactionRepository.save(new Transaction(TransactionType.DEBIT, 300.00, "prueba0003", fechaHoy,cuenta2));
+			transactionRepository.save(new Transaction(TransactionType.CREDIT, 200.00, "prueba01", cuenta1));
+			transactionRepository.save(new Transaction(TransactionType.DEBIT, 2000.00, "prueba002",cuenta1));
+			transactionRepository.save(new Transaction(TransactionType.DEBIT, 300.00, "prueba0003", cuenta2));
 
 			Client cliente2 = new Client("Juan", "Gonzalez", "JuanGonzalez@hotmail.com", passwordEncoder.encode("123"));
 			repository.save(cliente2);
 
-			Account cuenta3 = new Account("VIN009",fechaHoy,9000,cliente2);
-			Account cuenta4 = new Account("VIN008",fechaManiana,70,cliente2);
+			Account cuenta3 = new Account("VIN009",9000,cliente2);
+			Account cuenta4 = new Account("VIN008",70,cliente2);
 			accountRepository.save(cuenta3);
 			accountRepository.save(cuenta4);
 
-			transactionRepository.save(new Transaction(TransactionType.CREDIT, 1000200.00, "prueba04", fechaHoy,cuenta3));
-			transactionRepository.save(new Transaction(TransactionType.DEBIT, 2000.00, "prueba0025", fechaHoy,cuenta4));
-			transactionRepository.save(new Transaction(TransactionType.DEBIT, 300.00, "prueba0006", fechaHoy,cuenta4));
+			transactionRepository.save(new Transaction(TransactionType.CREDIT, 1000200.00, "prueba04", cuenta3));
+			transactionRepository.save(new Transaction(TransactionType.DEBIT, 2000.00, "prueba0025",cuenta4));
+			transactionRepository.save(new Transaction(TransactionType.DEBIT, 300.00, "prueba0006",cuenta4));
 
 			Client cli_aux = repository.findByEmail("melba@mindhub.com").orElse(null);
 
