@@ -34,10 +34,7 @@ public class AccountService {
     @Autowired
     private LongTermIncomeRepository longTermIncomeRepository;
 
-    public String getMensaje(String mensaje) {
-        return message.getMessage(mensaje, null, LocaleContextHolder.getLocale());
 
-    }
 
     public List<AccountDTO> getAccounts() {
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
@@ -73,8 +70,8 @@ public class AccountService {
     Set<Account> accounts=accountRepository.findAll().stream().collect(Collectors.toSet());
     accounts.stream().forEach(account ->{
         Double balance=account.getBalance();
-        Double interes=balance*0.1;
-        DailyIncome dailyIncome= new DailyIncome(account,interes,0.1);
+        Double interes=balance*0.01;
+        DailyIncome dailyIncome= new DailyIncome(account,interes,0.01);
         dailyIncomeRepository.save(dailyIncome);
         transactionService.transactionIncome(TransactionType.CREDIT,interes,"Acreditacion diaria",account);
 
