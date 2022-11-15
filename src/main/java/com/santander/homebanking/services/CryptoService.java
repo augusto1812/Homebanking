@@ -45,7 +45,84 @@ public class CryptoService {
 
 
 
-        return new ArrayList<>(Arrays.asList(0,getCurrencyDTO(currBuy,"ars"),200));
+//        return new ArrayList<>(Arrays.asList(0,getCurrencyDTO(currBuy,"ars"),200));
+
+        if(currBuy.equals(currSale)){
+            return new ArrayList<>(Arrays.asList(1,"La divisa de compra y venta no pueden ser iguales",403));
+        }
+
+
+        if ((currBuy.equals("ars"))){
+
+            //  /ARS/*noARS
+
+            CurrencyDTO currencyDTO = getCurrencyDTO(currSale,"ars");
+
+            Double buyValueAux= currencyDTO.getCompra();
+            Double saleValueAux = currencyDTO.getVenta();
+
+            currencyDTO.setCompra(1/saleValueAux);
+            currencyDTO.setVenta(1/buyValueAux);
+
+            return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
+
+        }
+
+        CurrencyDTO currencyDTO = getCurrencyDTO(currBuy,"ars");
+
+        if (!(currSale.equals("ars"))) {
+
+            //  /*noARS/*noARS
+
+            currencyDTO.setCompra(currencyDTO.getCompra() / saleValue(currSale));
+
+            currencyDTO.setVenta(currencyDTO.getVenta() / saleValue(currSale));
+
+            return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
+
+        }
+
+        //  /*noARS/ARS
+        return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
+
+
+
+
+        //anterior
+
+//        CurrencyDTO currencyDTO = getCurrencyDTO(currBuy,"ars");
+//
+//        if(!(currSale.equals("ars")) && !(currBuy.equals("ars"))){
+//
+//            //  /*noARS/*noARS
+//
+//            //CurrencyDTO currencyDTO = getCurrencyDTO(currBuy,"ars");
+//
+//            currencyDTO.setCompra(currencyDTO.getCompra() / saleValue(currSale));
+//
+//            currencyDTO.setVenta(currencyDTO.getVenta() / saleValue(currSale));
+//
+//            //return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
+//
+//        } else if ((currBuy.equals("ars"))) {
+//
+//            //  /ARS/*noARS
+//
+//            //CurrencyDTO currencyDTO = getCurrencyDTO(currBuy,"ars");
+//
+//            Double buyValueAux= currencyDTO.getCompra();
+//            Double saleValueAux = currencyDTO.getVenta();
+//
+//            currencyDTO.setCompra(1/buyValueAux);
+//            currencyDTO.setVenta(1/saleValueAux);
+//
+//        }
+//
+//        //  /*/ARS
+//
+//        return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
+
+
 
 
 //        return new ArrayList<>(Arrays.asList(1,"Error al consultar la cotizacion",403));

@@ -39,7 +39,7 @@ public class CryptoController {
     public ResponseEntity<Object> getPrice(
             @PathVariable(name = "currBuy") String currBuy,
             @PathVariable(name = "currSale") String currSale) {
-        ArrayList<Object> response = cryptoService.getPrice(currBuy,currSale);
+        ArrayList<Object> response = cryptoService.getPrice(currBuy.toLowerCase(),currSale.toLowerCase());
 
         if((Integer)response.get(0) == 0){
             //CurrencyDTO currencyDTO = (CurrencyDTO)response.get(1);
