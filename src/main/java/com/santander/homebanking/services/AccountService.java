@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -56,4 +58,11 @@ public class AccountService {
     public List<AccountDTO> getCurrentClientAccounts(Authentication authentication){
         return  accountRepository.findAccountsByClientEmail(authentication.getName()).stream().map(AccountDTO::new).collect(Collectors.toList());
     }
+
+    public ArrayList<Object> getTypesCurrencies(){
+        CurrencyType[] response = CurrencyType.values();
+        return new ArrayList<>(Arrays.asList(0,response,200));
+    }
+
+
 }

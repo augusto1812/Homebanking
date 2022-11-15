@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,4 +58,12 @@ public class AccountController {
 //    public List<AccountDTO> getAllAccountsByClientId(@PathVariable Long id){
 //        return accountService.getAllAccountsByClientId(id);
 //    }
+
+    @GetMapping(value="/account/getTypesCurrencies")
+    public ResponseEntity<Object> getTypesCurrencies(){
+        ArrayList<Object> response = accountService.getTypesCurrencies();
+        return new ResponseEntity<>(response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.santander.homebanking.controllers;
 
 import com.santander.homebanking.dtos.ClientDTO;
 import com.santander.homebanking.dtos.CurrencyDTO;
+import com.santander.homebanking.models.CurrencyType;
 import com.santander.homebanking.services.CryptoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class CryptoController {
     @Autowired
     CryptoService cryptoService;
 
+    //BORRAR
     @GetMapping(value="/currency/dolar")
     public Object dolar(){
         String urlAPI = "https://mercados.ambito.com/dolar/oficial/variacion";

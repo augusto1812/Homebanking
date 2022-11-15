@@ -10,7 +10,11 @@ var app = new Vue({
         accountToNumber: "VIN",
         trasnferType: "own",
         amount: 0,
-        description: ""
+        description: "",
+        typesCurrencies:[],
+        firstCurrency:"",
+        secondCurrency:"",
+        priceData:{}
     },
     methods:{
         getData: function(){
@@ -29,18 +33,18 @@ var app = new Vue({
         },
         checkTransfer: function(){
             if(this.accountFromNumber == "VIN"){
-                this.errorMsg = "You must select an origin account";  
+                this.errorMsg = "You must select an origin account";
                 this.errorToats.show();
             }
             else if(this.accountToNumber == "VIN"){
-                this.errorMsg = "You must select a destination account";  
+                this.errorMsg = "You must select a destination account";
                 this.errorToats.show();
             }else if(this.amount == 0){
-                this.errorMsg = "You must indicate an amount";  
+                this.errorMsg = "You must indicate an amount";
                 this.errorToats.show();
             }
             else if(this.description.length <= 0){
-                this.errorMsg = "You must indicate a description";  
+                this.errorMsg = "You must indicate a description";
                 this.errorToats.show();
             }else{
                 this.modal.show();
@@ -53,12 +57,12 @@ var app = new Vue({
                 }*/
             }
             axios.post(`/api/transactions?fromAccountNumber=${this.accountFromNumber}&toAccountNumber=${this.accountToNumber}&amount=${this.amount}&description=${this.description}`,config)
-            .then(response => { 
+            .then(response => {
                 this.modal.hide();
                 this.okmodal.show();
             })
             .catch((error) =>{
-                this.errorMsg = error.response.data;  
+                this.errorMsg = error.response.data;
                 this.errorToats.show();
             })
         },
@@ -79,9 +83,51 @@ var app = new Vue({
             axios.post('/api/logout')
             .then(response => window.location.href="/web/index.html")
             .catch(() =>{
-                this.errorMsg = "Sign out failed"   
+                this.errorMsg = "Sign out failed"
                 this.errorToats.show();
             })
+        },
+        getTypesCurrencies: function(){
+            axios.get("/api/account/getTypesCurrencies")
+            .then((response) => {
+                //get client ifo
+                this.typesCurrencies = response.data;
+            })
+            .catch((error) => {
+                this.errorMsg = "Error getting data";
+                this.errorToats.show();
+            })
+        },
+        getPrice: function(){
+            const urlParams = new URLSearchParams(window.location.search);
+            const currBuy = urlParams.get('currBuy');
+            const currSale = urlParams.get('currSale');
+            axios.get("/api/currency/getPrice/"+currBuy+"/"+currSale)
+            .then((response) => {
+                //get client ifo
+                this.priceData = response.data;
+            })
+            .catch((error) => {
+                this.errorMsg = "Error getting data";
+                this.errorToats.show();
+            })
+        },
+        getPricePage: function(){
+//            url = "/currency-prices.html?currBuy="+this.firstCurrency+"&currSale="+this.secondCurrency;
+//            window.location.href="http://localhost:8080/web/currency-prices.html?currBuy=usd&currSale=ars";
+//            url2=`currency-prices.html?currBuy=${this.firstCurrency}&currSale=${this.secondCurrency}`;
+//            url3='currency-prices.html?currBuy=usd&currSale=ars';
+//            window.location.replace('currency-prices.html?currBuy=usd&currSale=ars');
+               const currBuyAux = this.firstCurrency;
+               const currSaleAux= 'ars';
+
+
+
+               //window.location.replace('currency-prices.html?currBuy='+this.firstCurrency+'&currSale=ars');
+
+
+                //funka
+               window.location.replace('currency-prices.html?currBuy=usd&currSale=ars');
         },
     },
     mounted: function(){
@@ -89,5 +135,7 @@ var app = new Vue({
         this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
         this.okmodal = new bootstrap.Modal(document.getElementById('okModal'));
         this.getData();
+        this.getTypesCurrencies();
+        this.getPrice();
     }
 })
