@@ -27,6 +27,10 @@ public class Card {
     @JoinColumn(name="client_id")
     private Client client;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="account_id")
+    private Account account;
+
     private boolean active;
     public Card(){}
 
@@ -122,4 +126,13 @@ public class Card {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
 }

@@ -25,7 +25,6 @@ public class Discount {
     @Column(name = "final_date")
     private LocalDateTime finalDate;
 
-
     @ElementCollection
     @MapKeyColumn(name = "card_type")
     @Column(name = "percentage_per_card")

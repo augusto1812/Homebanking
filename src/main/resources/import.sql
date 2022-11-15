@@ -31,6 +31,6 @@ INSERT INTO client_loan (amount,payments,client_id,loan_id) VALUES (400000,60,1L
 INSERT INTO client_loan (amount,payments,client_id,loan_id) VALUES (50000,12,1L,2L);
 INSERT INTO client_loan (amount,payments,client_id,loan_id) VALUES (100000,24,2L,2L);
 INSERT INTO client_loan (amount,payments,client_id,loan_id) VALUES (200000,36,2L,3L);
-INSERT INTO card (card_holder,type,color,number,cvv,from_date,thru_date,client_id,active) VALUES ('Melba Morel',0,0,'3325-6745-7876-4445',990,'2022-09-08','2027-09-08',1L,true);
-INSERT INTO card (card_holder,type,color,number,cvv,from_date,thru_date,client_id,active) VALUES ('Melba Morel',1,2,'2234-6745-552-7888',750,'2022-09-08','2027-09-08',1L,true);
-INSERT INTO card (card_holder,type,color,number,cvv,from_date,thru_date,client_id,active) VALUES ('Irene Saenz',1,1,'5551-222-5343-5390',751,'2022-09-08','2027-09-08',2L,true);
+INSERT INTO card (card_holder,type,color,number,cvv,from_date,thru_date,client_id,active,account_id) VALUES ('Melba Morel',0,0,'3325-6745-7876-4445',990,'2022-09-08','2027-09-08',1L,true, 1L);
+INSERT INTO card (card_holder,type,color,number,cvv,from_date,thru_date,client_id,active,account_id) VALUES ('Melba Morel',1,2,'2234-6745-552-7888',750,'2022-09-08','2027-09-08',1L,true, 2L);
+INSERT INTO card (card_holder,type,color,number,cvv,from_date,thru_date,client_id,active,account_id) VALUES ('Irene Saenz',1,1,'5551-222-5343-5390',751,'2022-09-08','2027-09-08',2L,true, 3L);
