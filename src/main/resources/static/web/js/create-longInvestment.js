@@ -5,8 +5,9 @@ var app = new Vue({
         errorMsg: null,
         amount:0,
         period:"",
-        account: "VIN",
-        clientAccounts:[]
+        accountNumber: "VIN",
+        clientAccounts:[],
+        accountId:""
     },
     methods:{
        getData: function(){
@@ -40,8 +41,9 @@ var app = new Vue({
              this.errorToats.show();
             }
             else{
-               axios.post("/api/investments",{accountId: getAccountId(account), amount: this.amount, periodType: this.period })
-                //.then(response => window.location.href = "/web/cards.html")
+               this.getAccountId(this.accountNumber)
+               axios.post("/api/investments",{periodType: this.period, accountId: this.accountId, amount: this.amount  })
+               .then(response => window.location.href = "/web/investment.html")
                 .catch((error) =>{
                     this.errorMsg = error.response.data;
                     this.errorToats.show();
@@ -49,16 +51,15 @@ var app = new Vue({
             }
         },
         getAccountId: function( number){
-        clientAccounts.forEach( (account) => {
+        this.clientAccounts.forEach( (account) => {
             if (account.number == number){
-                return account.id
-                }
-            });
-        },
+               this.accountId = account.id
+                }});
+        }
     },
 
     mounted: function(){
-       this.getData();
+        this.getData();
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
     }
 })
