@@ -40,8 +40,7 @@ public class TransactionDTO {
     }
 
     public Double getAmount() {
-        return
-        round(amount);
+        return round(amount);
     }
 
     public void setAmount(Double amount) {
