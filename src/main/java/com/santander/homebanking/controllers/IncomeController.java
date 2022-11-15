@@ -26,7 +26,7 @@ public class IncomeController {
         if(result == "accepted"){
          return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
-        return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(messageService.getMessage(result), HttpStatus.FORBIDDEN);
 
     }
 

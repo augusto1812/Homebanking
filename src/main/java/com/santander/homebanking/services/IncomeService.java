@@ -27,14 +27,6 @@ public class IncomeService {
        Double amount= longTermIncomeDTO.getAmount();
        PeriodType periodType=longTermIncomeDTO.getPeriodType();
 
-       if(account==null){
-           return "no hay cuenta";
-       }
-       if(amount.isNaN())
-       {return "valor invalido";}
-       if(periodType == null)
-       {return "el periodo no existe";}
-
         if (account == null || amount.isNaN() || periodType == null){
             return "general.missingData";
         }
