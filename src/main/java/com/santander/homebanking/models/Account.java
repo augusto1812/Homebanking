@@ -30,6 +30,12 @@ public class Account {
     @OneToMany(mappedBy="account", fetch= FetchType.EAGER)
     Set<Transaction> transactions = new HashSet<>();
 
+    @OneToMany(mappedBy="account", fetch= FetchType.EAGER)
+    Set<DailyIncome> dailysIncomes = new HashSet<>();
+
+    @OneToMany(mappedBy="account", fetch= FetchType.EAGER)
+    Set<LongTermIncome> longTermIncomes= new HashSet<>();
+
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
@@ -89,5 +95,10 @@ public class Account {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    //Borrar DESPUES
+    public Set<LongTermIncome> getLongTermIncomes() {
+        return longTermIncomes;
     }
 }

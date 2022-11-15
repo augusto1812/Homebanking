@@ -1,9 +1,6 @@
 package com.santander.homebanking.services;
 
-import com.santander.homebanking.models.Account;
-import com.santander.homebanking.models.Client;
-import com.santander.homebanking.models.Transaction;
-import com.santander.homebanking.models.TransactionType;
+import com.santander.homebanking.models.*;
 import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.ClientRepository;
 import com.santander.homebanking.repositories.TransactionRepository;
@@ -89,5 +86,24 @@ public class TransactionService {
         transactionRepository.save(debit);
         transactionRepository.save(credit);
         return new ResponseEntity<>(getMensaje("transaction.createTransaction.created"),HttpStatus.CREATED);
+    }
+
+    public String transactionIncome( TransactionType type, Double amount, String description, Account account){
+
+        if( type== null || amount.isNaN() || description.isBlank() || account == null){
+            return "general.missingData";
+        }
+
+        if( accountRepository.findById(account.getId()).orElse(null) == null){
+            return "transaction.createTransaction.invalidAccountFrom";
+        }
+
+        /*  OK  */
+        Transaction transaction = new Transaction( type, amount, description, account);
+        transactionRepository.save(transaction);
+        account.setBalance(account.getBalance() + amount);
+        account.addTransaction(transaction);
+        accountRepository.save(account);
+        return "accepted";
     }
 }

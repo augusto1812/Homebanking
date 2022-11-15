@@ -130,7 +130,7 @@ public class IntegracionJpaTest {
     @Test
     void testAccountSave(){
         Client client = clientRepository.findById(1L).get();
-        Account data = new Account("VIN005", LocalDateTime.now(),5000,client);
+        Account data = new Account("VIN005",5000,client);
         Account account = accountRepository.save(data);
         assertEquals("VIN005", account.getNumber());
         assertEquals(5000, account.getBalance());

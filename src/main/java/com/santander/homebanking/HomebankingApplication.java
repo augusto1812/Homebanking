@@ -1,16 +1,14 @@
 package com.santander.homebanking;
 
 import com.santander.homebanking.models.*;
-import com.santander.homebanking.repositories.AccountRepository;
-import com.santander.homebanking.repositories.ClientRepository;
-import com.santander.homebanking.repositories.LoanRepository;
-import com.santander.homebanking.repositories.TransactionRepository;
+import com.santander.homebanking.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -20,6 +18,7 @@ import java.util.Arrays;
 
 @SpringBootApplication
 @EnableJpaAuditing
+@EnableScheduling
 public class HomebankingApplication {
 
 	public static void main(String[] args) {
@@ -30,7 +29,7 @@ public class HomebankingApplication {
 	PasswordEncoder passwordEncoder;
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository) {
+	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, LongTermIncomeRepository longTermIncomeRepository) {
 		return (args) -> {
 
 			// save a couple of customers
@@ -72,6 +71,10 @@ public class HomebankingApplication {
 			cli_aux2.setPassword(passwordEncoder.encode("123"));
 
 			repository.save(cli_aux2);
+
+			LongTermIncome longTermIncome = new LongTermIncome(cuenta1,3000.00,PeriodType.PERIOD_30);
+			longTermIncomeRepository.save(longTermIncome);
+			accountRepository.save(cuenta1);
 
 			//Loan loan1 = new Loan("Hipotecario",500000,new ArrayList<>(Arrays.asList(6,12,24,48)));
 
