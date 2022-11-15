@@ -79,25 +79,33 @@ public class HomebankingApplication {
 			// commit
 
 
-			Map<CardColor,Double> mapG = new HashMap<>();
-			mapG.put(CardColor.GOLD,50.0);
-			Map<CardColor,Double> mapS = new HashMap<>();
-			mapS.put(CardColor.SILVER,100.0);
+			Map<CardColor,Double> mapC = new HashMap<>();
+			mapC.put(CardColor.GOLD,10.0);
+			mapC.put(CardColor.SILVER,20.0);
+			mapC.put(CardColor.TITANIUM,30.0);
 			Map<CardColor,Double> mapT = new HashMap<>();
-			mapT.put(CardColor.TITANIUM,200.0);
-			Discount discount1 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapG);
-			Discount discount2 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapS);
-			Discount discount3 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapT);
-			Discount discount4 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapG);
-			Discount discount5 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapS);
-			Discount discount6 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapT);
+			mapT.put(CardColor.GOLD,5.0);
+			mapT.put(CardColor.SILVER,10.0);
+			mapT.put(CardColor.TITANIUM,20.0);
+			Map<CardColor,Double> mapP = new HashMap<>();
+			mapP.put(CardColor.GOLD,2.0);
+			mapP.put(CardColor.SILVER,5.0);
+			mapP.put(CardColor.TITANIUM,10.0);
+			Map<CardColor,Double> mapF = new HashMap<>();
+			mapF.put(CardColor.GOLD,3.0);
+			mapF.put(CardColor.SILVER,7.0);
+			mapF.put(CardColor.TITANIUM,13.0);
+
+			Discount discount1 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapC);
+			Discount discount2 = new Discount(SectorType.TECHNOLOGY,fechaHoy,fechaManiana,mapT);
+			Discount discount3 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapP);
+			Discount discount4 = new Discount(SectorType.SUPERMARKET,fechaHoy,fechaManiana,mapF);
 
 			discountRepository.save(discount1);
 			discountRepository.save(discount2);
 			discountRepository.save(discount3);
 			discountRepository.save(discount4);
-			discountRepository.save(discount5);
-			discountRepository.save(discount6);
+
 
 
 			Cashback cashback1 = new Cashback(CardColor.TITANIUM,CardType.DEBIT,0.01);
