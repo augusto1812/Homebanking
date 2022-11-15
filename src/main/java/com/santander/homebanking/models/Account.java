@@ -30,6 +30,10 @@ public class Account {
     @OneToMany(mappedBy="account", fetch= FetchType.EAGER)
     Set<Transaction> transactions = new HashSet<>();
 
+    private AccountType accountType;
+
+    private CurrencyType currencyType;
+
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
@@ -37,10 +41,12 @@ public class Account {
 
     public Account(){}
 
-    public Account(String number, double balance, Client client) {
+    public Account(String number, double balance, Client client, AccountType accountType, CurrencyType currencyType) {
         this.number = number;
         this.balance = balance;
         this.client = client;
+        this.accountType = accountType;
+        this.currencyType = currencyType;
     }
     public Set<Transaction> getTransactions() {
         return transactions;
@@ -89,5 +95,21 @@ public class Account {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public CurrencyType getCurrencyType() {
+        return currencyType;
+    }
+
+    public void setCurrencyType(CurrencyType currencyType) {
+        this.currencyType = currencyType;
     }
 }

@@ -39,8 +39,8 @@ public class HomebankingApplication {
 			Client cliente1 = new Client("Jack", "Bauer", "JackBauer@hotmail.com", passwordEncoder.encode("123"));
 			repository.save(cliente1);
 
-			Account cuenta1 = new Account("VIN007",5000,cliente1);
-			Account cuenta2 = new Account("VIN008",7500,cliente1);
+			Account cuenta1 = new Account("VIN007",5000,cliente1,AccountType.CA,CurrencyType.ARS);
+			Account cuenta2 = new Account("VIN008",7500,cliente1,AccountType.CA,CurrencyType.ARS);
 			accountRepository.save(cuenta1);
 			accountRepository.save(cuenta2);
 			cliente1.addAccount(cuenta1);
@@ -52,8 +52,8 @@ public class HomebankingApplication {
 			Client cliente2 = new Client("Juan", "Gonzalez", "JuanGonzalez@hotmail.com", passwordEncoder.encode("123"));
 			repository.save(cliente2);
 
-			Account cuenta3 = new Account("VIN009",9000,cliente2);
-			Account cuenta4 = new Account("VIN008",70,cliente2);
+			Account cuenta3 = new Account("VIN009",500000,cliente2,AccountType.CA,CurrencyType.ARS);
+			Account cuenta4 = new Account("VIN010",4,cliente2,AccountType.CA,CurrencyType.BTC);
 			accountRepository.save(cuenta3);
 			accountRepository.save(cuenta4);
 

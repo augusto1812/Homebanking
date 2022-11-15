@@ -1,6 +1,8 @@
 package com.santander.homebanking.dtos;
 
 import com.santander.homebanking.models.Account;
+import com.santander.homebanking.models.AccountType;
+import com.santander.homebanking.models.CurrencyType;
 
 import javax.persistence.Column;
 import java.time.LocalDateTime;
@@ -15,6 +17,10 @@ public class AccountDTO {
     private double balance;
     private Set<TransactionDTO> transactions = new HashSet<>();
 
+    private AccountType accountType;
+
+    private CurrencyType currencyType;
+
 
 
     public AccountDTO(Account account) {
@@ -23,6 +29,8 @@ public class AccountDTO {
         this.creationDate = account.getCreationDate();
         this.balance = account.getBalance();
         this.transactions = account.getTransactions().stream().map((TransactionDTO::new)).collect(Collectors.toSet());
+        this.accountType = account.getAccountType();
+        this.currencyType = account.getCurrencyType();
     }
 
     public long getId() {
@@ -65,4 +73,19 @@ public class AccountDTO {
         this.transactions = transactions;
     }
 
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public CurrencyType getCurrencyType() {
+        return currencyType;
+    }
+
+    public void setCurrencyType(CurrencyType currencyType) {
+        this.currencyType = currencyType;
+    }
 }

@@ -3,7 +3,9 @@ package com.santander.homebanking.controllers;
 import com.santander.homebanking.dtos.AccountDTO;
 import com.santander.homebanking.dtos.ClientDTO;
 import com.santander.homebanking.models.Account;
+import com.santander.homebanking.models.AccountType;
 import com.santander.homebanking.models.Client;
+import com.santander.homebanking.models.CurrencyType;
 import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.ClientRepository;
 import com.santander.homebanking.services.AccountService;
@@ -47,8 +49,8 @@ public class AccountController {
     }
 
     @PostMapping(value = "clients/current/accounts")
-    public ResponseEntity<Object> newAccount(Authentication authentication){
-        return clientService.newAccountToClient(authentication);
+    public ResponseEntity<Object> newAccount(Authentication authentication, @RequestParam AccountType accountType, @RequestParam CurrencyType currencyType){
+        return clientService.newAccountToClient(authentication, accountType, currencyType);
     }
 
 //    @GetMapping(value = "/{id}/accounts")

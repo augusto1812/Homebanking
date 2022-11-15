@@ -1,9 +1,9 @@
 INSERT INTO client (first_name, last_name, email,password) VALUES ('Melba', 'Morel', 'melba@mindhub.com','123');
 INSERT INTO client (first_name, last_name, email,password) VALUES ('Irene', 'Saenz', 'irene@mindhub.com','123');
-INSERT INTO account (number, creation_date, balance, client_id) VALUES ('VIN001', '2022-09-08', 5000, 1L);
-INSERT INTO account (number, creation_date, balance, client_id) VALUES ('VIN002', '2022-09-08', 7500, 1L);
-INSERT INTO account (number, creation_date, balance, client_id) VALUES ('VIN003', '2022-09-08', 9000, 2L);
-INSERT INTO account (number, creation_date, balance, client_id) VALUES ('VIN004', '2022-09-08', 6500, 2L);
+INSERT INTO account (number, creation_date, balance, client_id, account_type, currency_type) VALUES ('VIN001', '2022-09-08', 5000, 1L, 0, 0);
+INSERT INTO account (number, creation_date, balance, client_id, account_type, currency_type) VALUES ('VIN002', '2022-09-08', 7500, 1L, 0, 0);
+INSERT INTO account (number, creation_date, balance, client_id, account_type, currency_type) VALUES ('VIN003', '2022-09-08', 9000, 2L, 0, 0);
+INSERT INTO account (number, creation_date, balance, client_id, account_type, currency_type) VALUES ('VIN004', '2022-09-08', 6500, 2L, 0, 0);
 INSERT INTO transactions (type,amount,description,creation_date,account_id) VALUES (0,2000,'transferencia recibida','2022-09-25',1L);
 INSERT INTO transactions (type,amount,description,creation_date,account_id) VALUES (0,4000,'Compra tienda xx','2022-09-25',1L);
 INSERT INTO transactions (type,amount,description,creation_date,account_id) VALUES (0,1000,'transferencia recibida','2022-09-25',2L);

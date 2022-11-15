@@ -2,6 +2,8 @@ package com.santander.homebanking.services;
 
 import com.santander.homebanking.dtos.AccountDTO;
 import com.santander.homebanking.models.Account;
+import com.santander.homebanking.models.AccountType;
+import com.santander.homebanking.models.CurrencyType;
 import com.santander.homebanking.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -41,14 +43,14 @@ public class AccountService {
         return accountRepository.getAllAccountsByClientId(id).stream().map(AccountDTO::new).collect(toList());
     }
 
-    public Account newAccount(){
+    public Account newAccount(AccountType accountType, CurrencyType currencyType){
         Random random = new Random();
         String number = "VIN001";
         while ( accountRepository.findByNumber(number).orElse(null) != null) {
             Integer randomI  = random.nextInt(999999 - 1) +1;
             number = String.format("VIN%0"+ 8 + "d",randomI);
         }
-        return new Account(number, 0, null);
+        return new Account(number, 0, null, accountType, currencyType);
     }
 
     public List<AccountDTO> getCurrentClientAccounts(Authentication authentication){

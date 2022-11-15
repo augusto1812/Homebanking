@@ -1,9 +1,6 @@
 package com.santander.homebanking.services;
 
-import com.santander.homebanking.models.Account;
-import com.santander.homebanking.models.Client;
-import com.santander.homebanking.models.Transaction;
-import com.santander.homebanking.models.TransactionType;
+import com.santander.homebanking.models.*;
 import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.ClientRepository;
 import com.santander.homebanking.repositories.TransactionRepository;
@@ -16,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Service
 public class TransactionService {
@@ -90,4 +89,85 @@ public class TransactionService {
         transactionRepository.save(credit);
         return new ResponseEntity<>(getMensaje("transaction.createTransaction.created"),HttpStatus.CREATED);
     }
+
+
+    public ArrayList<Object> createTransactionBuySaleCurr(
+            Authentication authentication,
+            Double amountSale,
+            Double amountBuy,
+            String currBuy,
+            String currSale,
+            String accountFrom,
+            String accountTo){
+
+
+        //Verificar que los parámetros no estén vacíos
+        if(amountSale.isNaN() || amountBuy.isNaN() || accountFrom.isBlank() || accountTo.isBlank()){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransaction.emptyValues"),403));
+        }
+
+        //Verificar que los números de cuenta no sean iguales
+        if(accountFrom.equals(accountTo)){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransaction.equalAccounts"),403));
+        }
+
+        //Verificar que exista la cuenta de origen
+        Account accFrom = accountRepository.findByNumber(accountFrom).orElse(null);
+        if (accFrom == null){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransaction.missingAccountFrom"),403));
+        }
+
+        //Verificar que exista la cuenta de destino
+        Account accTo = accountRepository.findByNumber(accountTo).orElse(null);
+        if (accTo == null){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransaction.missingAccountTo"),403));
+        }
+
+        //Verificar que la cuenta de origen y destino pertenezca al cliente autenticado
+        Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
+        if(accountRepository.findByClientAndNumber(client, accountFrom).orElse(null) ==  null || accountRepository.findByClientAndNumber(client, accountTo).orElse(null) ==  null){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransactionBuySaleCurr.missingAccountFromOrAccountTo"),403));
+        }
+
+        //COMPLETAR
+        //Verificar si los tipos de cuenta son distintos. CA y CC
+
+        //Verificar si la accFrom es del tipo currSale
+        if(!(accFrom.getCurrencyType().equals(CurrencyType.valueOf(currSale)))){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransactionBuySaleCurr.accFromTypeWrong"),403));
+        }
+
+        //Verificar si la accTo es del tipo currBuy
+        if(!(accTo.getCurrencyType().equals(CurrencyType.valueOf(currBuy)))){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransactionBuySaleCurr.accToTypeWrong"),403));
+        }
+
+        //Verificar que la cuenta de origen tenga el monto disponible.
+        Double availableAmountFrom = accountRepository.findByNumber(accountFrom).orElse(null).getBalance();
+        if(availableAmountFrom < amountSale){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransaction.poorMoney"),403));
+        }
+
+        //Crear transacción “DEBIT” asociada a la cuenta de origen
+//        Account accFrom = accountRepository.findByNumber(accountFrom).orElse(null);
+        Transaction debit = new Transaction(TransactionType.DEBIT,-amountSale,  "Compra de "+ currBuy + ". Depositado en la cuenta " + accountTo, accFrom);
+
+        // Crear transaccion “CREDIT” asociada a la cuenta de destino.
+//        Account accTo = accountRepository.findByNumber(accountTo).orElse(null);
+        Transaction credit = new Transaction(TransactionType.CREDIT,amountBuy,"Venta de " + currSale + ". Origen de los fondos " + accountFrom,accTo);
+
+        //A la cuenta de origen se le restará el monto indicado en la petición
+        accFrom.setBalance(availableAmountFrom-amountSale);
+
+        // cuenta de destino se le sumará el mismo monto.
+        Double  availableAmountTo = accountRepository.findByNumber(accountTo).orElse(null).getBalance();
+        accTo.setBalance(availableAmountTo + amountBuy);
+
+        accountRepository.save(accFrom);
+        accountRepository.save(accTo);
+        transactionRepository.save(debit);
+        transactionRepository.save(credit);
+        return new ArrayList<>(Arrays.asList(0,getMensaje("transaction.createTransaction.created"),201));
+    }
+
 }
