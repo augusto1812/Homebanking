@@ -21,7 +21,7 @@ public class AccountDTO {
         this.id = account.getId();
         this.number = account.getNumber();
         this.creationDate = account.getCreationDate();
-        this.balance = account.getBalance();
+        this.balance = Math.round(account.getBalance()*100)/100;
         this.transactions = account.getTransactions().stream().map((TransactionDTO::new)).collect(Collectors.toSet());
     }
 
@@ -50,7 +50,7 @@ public class AccountDTO {
     }
 
     public double getBalance() {
-        return balance;
+        return Math.round(balance*100)/100;
     }
 
     public void setBalance(double balance) {

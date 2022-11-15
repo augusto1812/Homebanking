@@ -82,7 +82,7 @@
                             <div class="row mb-3">
                                 <label for="account" class="col-sm-4 col-form-label col-auto">Accounts</label>
                                 <div class="col-md-5 col-auto">
-                                    <select id="account" v-model="account" class="form-select" required>
+                                    <select id="account" v-model="accountNumber" class="form-select" required>
                                         <option value="VIN">Open this select menu</option>
                                         <option v-for="account in clientAccounts" v-bind:value="account.number">{{account.number }}
                                         </option>
