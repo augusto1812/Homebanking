@@ -64,7 +64,7 @@ public class AccountService {
 
 
     //second, minute, hour, day of month, month, day(s) of week
-    @Scheduled(cron = "30 * * * * *")
+    @Scheduled(cron = "10 * * * * *")
     public void addDailyIncome() {
 
     Set<Account> accounts=accountRepository.findAll().stream().collect(Collectors.toSet());
@@ -80,7 +80,7 @@ public class AccountService {
     }
 
 
-    @Scheduled(cron = "30 * * * * *")
+    @Scheduled(cron = "10 * * * * *")
     public void addLongTerm(){
         String result = "";
         Set<Account> accounts=accountRepository.findAll().stream().collect(Collectors.toSet());

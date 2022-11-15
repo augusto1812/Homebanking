@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.santander.homebanking.utils.MathUtils.round;
+
 public class AccountDTO {
     private long id;
     private String number;
@@ -50,7 +52,7 @@ public class AccountDTO {
     }
 
     public double getBalance() {
-        return balance;
+        return round(balance) ;
     }
 
     public void setBalance(double balance) {

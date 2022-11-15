@@ -54,10 +54,11 @@ var app = new Vue({
                 return account.id
                 }
             });
-        }
+        },
     },
 
     mounted: function(){
+       this.getData();
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
     }
 })

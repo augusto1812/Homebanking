@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static com.santander.homebanking.utils.MathUtils.round;
+
 public class TransactionDTO {
 
     private long id;
@@ -46,7 +48,8 @@ public class TransactionDTO {
     }
 
     public Double getAmount() {
-        return amount;
+        return
+        round(amount);
     }
 
     public void setAmount(Double amount) {
