@@ -59,11 +59,13 @@ public class AccountController {
 //        return accountService.getAllAccountsByClientId(id);
 //    }
 
-    @GetMapping(value="/account/getTypesCurrencies")
-    public ResponseEntity<Object> getTypesCurrencies(){
-        ArrayList<Object> response = accountService.getTypesCurrencies();
+    @GetMapping(value="/account/getTypesAccount")
+    public ResponseEntity<Object> getTypesAccount(){
+        ArrayList<Object> response = accountService.getTypesAccount();
         return new ResponseEntity<>(response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
     }
+
+
 
 
 }

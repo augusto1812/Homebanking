@@ -3,21 +3,19 @@ package com.santander.homebanking.services;
 import com.santander.homebanking.dtos.CurrencyCryptoDTO;
 import com.santander.homebanking.dtos.CurrencyDTO;
 import com.santander.homebanking.dtos.CurrencyUsdDTO;
+import com.santander.homebanking.models.CurrencyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @Service
-public class CryptoService {
+public class CurrencyService {
 
     Double taxUSD = 1.65;
 
@@ -250,6 +248,11 @@ public class CryptoService {
             return new CurrencyDTO(response.getTotalBid(), response.getTotalAsk());
         }
 
+    }
+
+    public ArrayList<Object> getTypesCurrencies(){
+        CurrencyType[] response = CurrencyType.values();
+        return new ArrayList<>(Arrays.asList(0,response,200));
     }
 
 

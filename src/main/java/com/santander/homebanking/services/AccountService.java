@@ -59,8 +59,8 @@ public class AccountService {
         return  accountRepository.findAccountsByClientEmail(authentication.getName()).stream().map(AccountDTO::new).collect(Collectors.toList());
     }
 
-    public ArrayList<Object> getTypesCurrencies(){
-        CurrencyType[] response = CurrencyType.values();
+    public ArrayList<Object> getTypesAccount(){
+        AccountType[] response = AccountType.values();
         return new ArrayList<>(Arrays.asList(0,response,200));
     }
 

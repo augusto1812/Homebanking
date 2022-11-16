@@ -1,9 +1,7 @@
 package com.santander.homebanking.controllers;
 
-import com.santander.homebanking.dtos.ClientDTO;
 import com.santander.homebanking.dtos.CurrencyDTO;
-import com.santander.homebanking.models.CurrencyType;
-import com.santander.homebanking.services.CryptoService;
+import com.santander.homebanking.services.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,16 +9,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping(value = "/api")
-public class CryptoController {
+public class CurrencyController {
 
     @Autowired
-    CryptoService cryptoService;
+    CurrencyService currencyService;
 
     //BORRAR
     @GetMapping(value="/currency/dolar")
@@ -41,7 +38,7 @@ public class CryptoController {
     public ResponseEntity<Object> getPrice(
             @PathVariable(name = "currBuy") String currBuy,
             @PathVariable(name = "currSale") String currSale) {
-        ArrayList<Object> response = cryptoService.getPrice(currBuy.toLowerCase(),currSale.toLowerCase());
+        ArrayList<Object> response = currencyService.getPrice(currBuy.toLowerCase(),currSale.toLowerCase());
 
         if((Integer)response.get(0) == 0){
             //CurrencyDTO currencyDTO = (CurrencyDTO)response.get(1);
@@ -61,7 +58,7 @@ public class CryptoController {
             @RequestParam String fromAccountNumber,
             @RequestParam String toAccountNumber){
 
-        ArrayList<Object> response = cryptoService.buySaleCurr(
+        ArrayList<Object> response = currencyService.buySaleCurr(
                 authentication,
                 amount,
                 currBuy,
@@ -71,6 +68,13 @@ public class CryptoController {
 
         return new ResponseEntity<>((String)response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
 
+    }
+
+
+    @GetMapping(value="/currency/getTypesCurrencies")
+    public ResponseEntity<Object> getTypesCurrencies(){
+        ArrayList<Object> response = currencyService.getTypesCurrencies();
+        return new ResponseEntity<>(response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
     }
 
 

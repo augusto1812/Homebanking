@@ -3,12 +3,10 @@ var app = new Vue({
     data:{
         errorToats: null,
         errorMsg: null,
-        typesCurrencies:[],
-        firstCurrency:"",
-        secondCurrency:"",
-        priceData:{},
-        firstCurrencyPrice:"",
-        secondCurrencyPrice:""
+        typeAccount:"",
+        typesAccount:[],
+        typeCurrency:"",
+        typesCurrencies:[]
     },
     methods:{
         formatDate: function(date){
@@ -25,6 +23,16 @@ var app = new Vue({
                 this.errorToats.show();
             })
         },
+        getTypesAccount: function(){
+            axios.get("/api/account/getTypesAccount")
+            .then((response) => {
+                this.typesAccount = response.data;
+            })
+            .catch((error) => {
+                this.errorMsg = "Error getting data";
+                this.errorToats.show();
+            })
+        },
         getTypesCurrencies: function(){
             axios.get("/api/currency/getTypesCurrencies")
             .then((response) => {
@@ -35,22 +43,20 @@ var app = new Vue({
                 this.errorToats.show();
             })
         },
-        getPricePage: function(){
-               axios.get("/api/currency/getPrice/"+this.firstCurrency+"/"+this.secondCurrency)
-               .then((response) => {
-                   this.firstCurrencyPrice = response.data.compra;
-                   this.secondCurrencyPrice = response.data.venta;
-               })
-               .catch((error) => {
-                   this.errorMsg = error.response.data;
-                   this.errorToats.show();
-               })
+        createAccount: function(){
+            axios.post(`/api/clients/current/accounts?accountType=${this.typeAccount}&currencyType=${this.typeCurrency}`)
+            .then(response => window.location.href = "/web/accounts.html")
+            .catch((error) =>{
+                this.errorMsg = error.response.data;
+                this.errorToats.show();
+            })
         },
     },
     mounted: function(){
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
         this.modal = new bootstrap.Modal(document.getElementById('confirModal'));
         this.okmodal = new bootstrap.Modal(document.getElementById('okModal'));
+        this.getTypesAccount();
         this.getTypesCurrencies();
     }
 })
