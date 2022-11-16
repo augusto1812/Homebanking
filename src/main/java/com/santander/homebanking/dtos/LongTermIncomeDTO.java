@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 
 public class LongTermIncomeDTO {
 
-
+    private Long id;
     private PeriodType periodType;
     private long accountId;
     private Double amount;
@@ -32,6 +32,7 @@ public class LongTermIncomeDTO {
     }
 
     public LongTermIncomeDTO(LongTermIncome longTermIncome) {
+        this.id = longTermIncome.getId();
         this.days = longTermIncome.getPeriod().getDays();
         this.accountId = longTermIncome.getAccount().getId();
         this.amount = longTermIncome.getAmount();
@@ -74,6 +75,10 @@ public class LongTermIncomeDTO {
     public String getDate() {
         String date1= date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return date1;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Integer getDays() {

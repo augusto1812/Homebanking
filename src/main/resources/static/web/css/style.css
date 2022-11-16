@@ -81,3 +81,7 @@ naranja #E57A44
 .index-container{
     margin-top: 10%;
 }
+
+.cardInvestment p{
+    margin-bottom: 0.2rem !important;
+}

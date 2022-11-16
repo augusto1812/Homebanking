@@ -13,7 +13,7 @@ var app = new Vue({
            axios.get("/api/investments")
            .then((response) => {
                this.clientInvestments = response.data;
-               console.log(this.clientInvestments);
+               this.orderByActive(this.clientInvestments);
            })
            .catch((error) => {
                this.errorMsg = "Error getting data";
@@ -30,7 +30,17 @@ var app = new Vue({
                 this.errorMsg = "Sign out failed"
                 this.errorToats.show();
             })
-        }
+        },
+    orderByActive: function(arr){
+        arr.sort((a, b)=>{
+         if(a.active && !b.active){
+            return -1;
+         }else if(!a.active && b.active){
+            return 1;
+            }
+         return b.amount - a.amount
+          });
+       }
     },
     mounted: function(){
         this.getData();
