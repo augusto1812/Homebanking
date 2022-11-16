@@ -59,6 +59,12 @@
                                     Investments
                                 </a>
                             </li>
+                            <li>
+                                <a href="/web/benefits.html" class="nav-link link-dark">
+                                    <i class="bi bi-percent"></i>
+                                    Benefits
+                                </a>
+                            </li>
                         </ul>
                         <hr>
                         <ul class="nav nav-pills flex-column mb-auto">
@@ -75,6 +81,12 @@
                     <div class="row mt-3">
                         <div class="col">
                             <h2 class="display-6 account">Account Number: {{ accountInfo.number }} - Balance: ${{ accountInfo.balance }}</h2>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <p><b class="term">Type</b> {{accountInfo.accountType}}</p>
+                            <p><b class="term">Currency</b> {{accountInfo.currencyType}}</p>
                         </div>
                     </div>
                     <div class="row mt-3">
