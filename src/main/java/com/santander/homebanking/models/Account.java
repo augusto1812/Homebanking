@@ -31,6 +31,9 @@ public class Account {
     Set<Transaction> transactions = new HashSet<>();
 
     @OneToMany(mappedBy="account", fetch= FetchType.EAGER)
+    Set<Card> cards = new HashSet<>();
+
+    @OneToMany(mappedBy="account", fetch= FetchType.EAGER)
     Set<DailyIncome> dailysIncomes = new HashSet<>();
 
     @OneToMany(mappedBy="account", fetch= FetchType.EAGER)
@@ -97,8 +100,15 @@ public class Account {
         this.client = client;
     }
 
-    //Borrar DESPUES
     public Set<LongTermIncome> getLongTermIncomes() {
         return longTermIncomes;
+    }
+
+    public Set<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
     }
 }
