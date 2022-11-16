@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.santander.homebanking.utils.AccountUtils.getNumeroCuenta;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -49,12 +50,13 @@ public class AccountService {
     }
 
     public Account newAccount() {
-        Random random = new Random();
-        String number = "VIN001";
-        while (accountRepository.findByNumber(number).orElse(null) != null) {
-            Integer randomI = random.nextInt(999999 - 1) + 1;
-            number = String.format("VIN%0" + 8 + "d", randomI);
+        String number;
+        do{
+            number=getNumeroCuenta();
         }
+        while (accountRepository.findByNumber(number).orElse(null) != null) ;
+
+
         return new Account(number, 0, null);
     }
 

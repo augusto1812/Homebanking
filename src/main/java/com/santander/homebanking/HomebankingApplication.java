@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -29,7 +31,7 @@ public class HomebankingApplication {
 	PasswordEncoder passwordEncoder;
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, LongTermIncomeRepository longTermIncomeRepository) {
+	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, LongTermIncomeRepository longTermIncomeRepository,DiscountRepository discountRepository, CashbackRepository cashbackRepository) {
 		return (args) -> {
 
 			// save a couple of customers
@@ -82,6 +84,49 @@ public class HomebankingApplication {
 			// commit
 			// commit
 
+
+			Map<CardColor,Double> mapC = new HashMap<>();
+			mapC.put(CardColor.GOLD,10.0);
+			mapC.put(CardColor.SILVER,20.0);
+			mapC.put(CardColor.TITANIUM,30.0);
+			Map<CardColor,Double> mapT = new HashMap<>();
+			mapT.put(CardColor.GOLD,5.0);
+			mapT.put(CardColor.SILVER,10.0);
+			mapT.put(CardColor.TITANIUM,20.0);
+			Map<CardColor,Double> mapP = new HashMap<>();
+			mapP.put(CardColor.GOLD,2.0);
+			mapP.put(CardColor.SILVER,5.0);
+			mapP.put(CardColor.TITANIUM,10.0);
+			Map<CardColor,Double> mapF = new HashMap<>();
+			mapF.put(CardColor.GOLD,3.0);
+			mapF.put(CardColor.SILVER,7.0);
+			mapF.put(CardColor.TITANIUM,13.0);
+
+			Discount discount1 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapC);
+			Discount discount2 = new Discount(SectorType.TECHNOLOGY,fechaHoy,fechaManiana,mapT);
+			Discount discount3 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapP);
+			Discount discount4 = new Discount(SectorType.SUPERMARKET,fechaHoy,fechaManiana,mapF);
+
+			discountRepository.save(discount1);
+			discountRepository.save(discount2);
+			discountRepository.save(discount3);
+			discountRepository.save(discount4);
+
+
+
+			Cashback cashback1 = new Cashback(CardColor.TITANIUM,CardType.DEBIT,0.01);
+			Cashback cashback2 = new Cashback(CardColor.SILVER,CardType.DEBIT,0.005);
+			Cashback cashback3 = new Cashback(CardColor.GOLD,CardType.DEBIT,0.002);
+			Cashback cashback4 = new Cashback(CardColor.TITANIUM,CardType.CREDIT,0.03);
+			Cashback cashback5 = new Cashback(CardColor.SILVER,CardType.CREDIT,0.015);
+			Cashback cashback6 = new Cashback(CardColor.GOLD,CardType.CREDIT,0.007);
+
+			cashbackRepository.save(cashback1);
+			cashbackRepository.save(cashback2);
+			cashbackRepository.save(cashback3);
+			cashbackRepository.save(cashback4);
+			cashbackRepository.save(cashback5);
+			cashbackRepository.save(cashback6);
 		};
 	}
 }

@@ -29,13 +29,9 @@ public class LoanService {
     @Autowired
     TransactionRepository transactionRepository;
     @Autowired
-    MessageSource message;
+    MessageService messageService;
 
-    public String  getMensaje (String mensaje)
-    {
-        return   message.getMessage(mensaje,null, LocaleContextHolder.getLocale());
 
-    }
     public ResponseEntity<Object> createLoan(Authentication authentication, LoanApplicationDTO loanApplicationDTO) {
 //        Verificar que los datos sean correctos, es decir no estén vacíos, que el monto no sea 0 o que las cuotas no sean 0.
         //id del préstamo, monto, cuotas y número de cuenta de destino
@@ -44,31 +40,31 @@ public class LoanService {
         Integer payments = loanApplicationDTO.getPayments();
         String accountToNumber = loanApplicationDTO.getToAccountNumber();
         if (idLoan.toString().isBlank() || amount.isNaN() || payments.toString().isBlank() || accountToNumber.isBlank()){
-            return new ResponseEntity<>(getMensaje("loan.createLoan.emptyValues"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("loan.createLoan.emptyValues"), HttpStatus.FORBIDDEN);
         }
 //      Verificar que el préstamo exista
         Loan loan = loanRepository.findById(idLoan).orElse(null);
         if(loan == null){
-            return new ResponseEntity<>(getMensaje("loan.createLoan.missingLoan"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("loan.createLoan.missingLoan"), HttpStatus.FORBIDDEN);
         }
 //        Verificar que el monto solicitado no exceda el monto máximo del préstamo
         if(amount > loan.getMaxAmount()){
-            return new ResponseEntity<>(getMensaje("loan.createLoan.invalidAmount"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("loan.createLoan.invalidAmount"), HttpStatus.FORBIDDEN);
         }
 //        Verifica que la cantidad de cuotas se encuentre entre las disponibles del préstamo
         if(!loan.getPayments().contains(payments) ){
-            return new ResponseEntity<>(getMensaje("loan.createLoan.missingPayments"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("loan.createLoan.missingPayments"), HttpStatus.FORBIDDEN);
         }
 //        Verificar que la cuenta de destino exista
         Account accountTo = accountRepository.findByNumber(accountToNumber).orElse(null);
         if(accountTo == null){
-            return new ResponseEntity<>(getMensaje("loan.createLoan.accountToDoesntExist"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("loan.createLoan.accountToDoesntExist"), HttpStatus.FORBIDDEN);
         }
 //        Verificar que la cuenta de destino pertenezca al cliente autenticado
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
         Client clientAccount = accountTo.getClient();
         if(client != clientAccount){
-            return new ResponseEntity<>(getMensaje("loan.createLoan.invalidAccountTo"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("loan.createLoan.invalidAccountTo"), HttpStatus.FORBIDDEN);
         }
 //        Se debe crear una solicitud de préstamo con el monto solicitado sumando el 20% del mismo
         Double incrementedAmount = amount * 1.2;
@@ -84,7 +80,7 @@ public class LoanService {
         accountRepository.save(accountTo);
         transactionRepository.save(credit);
 
-        return new ResponseEntity<>(getMensaje("loan.createLoan.created"), HttpStatus.CREATED);
+        return new ResponseEntity<>(messageService.getMessage("loan.createLoan.created"), HttpStatus.CREATED);
     }
 
     public List<LoanDTO> getLoans(Authentication authentication){
