@@ -193,24 +193,48 @@ public class CurrencyService {
             *
             * */
 
-            Double price = buyValue(currSale) / saleValue(currBuy);
+//            Double price = buyValue(currSale) / saleValue(currBuy);
+
+            Double price = getPriceAmount(currBuy,currSale,0);
 
             return amount * price;
 
         } else if ((currBuy.equals("ars"))) {
 
-            Double price = buyValue(currSale);
+//            Double price = buyValue(currSale);
+
+            Double price = getPriceAmount(currBuy,currSale,1);
 
             return amount * price;
 
         }else{
 
-            Double price = saleValue(currBuy);
+//            Double price = saleValue(currBuy);
+
+            Double price = getPriceAmount(currBuy,currSale,2);
 
             return amount / price;
         }
 
     }
+
+    public Double getPriceAmount(String currBuy, String currSale,int numCase){
+
+        switch(numCase) {
+            case 0:
+                // code block
+                return buyValue(currSale) / saleValue(currBuy);
+            case 1:
+                // code block
+                return buyValue(currSale);
+            case 2:
+                // code block
+                return saleValue(currBuy);
+        }
+
+        return 0.0;
+    }
+
 
 
     public Double buyValue(String curr){
@@ -255,5 +279,66 @@ public class CurrencyService {
         return new ArrayList<>(Arrays.asList(0,response,200));
     }
 
+    public ArrayList<Object> getBuyAmount(Double amount,String currBuy, String currSale){
+
+        if(amount.isNaN() || currBuy.isBlank() || currSale.isBlank()){
+            return new ArrayList<>(Arrays.asList(1,"Los valores no pueden ser vacios",403));
+        }
+
+        if(currBuy.equals(currSale)){
+            return new ArrayList<>(Arrays.asList(1,"La divisa de compra y venta no pueden ser iguales",403));
+        }
+
+        return new ArrayList<>(Arrays.asList(0,getBuySaleAmount(amount,currBuy,currSale),200));
+    }
+
+
+    public ArrayList<Object> getSaleAmount(Double amount,String currBuy, String currSale){
+
+        if(amount.isNaN() || currBuy.isBlank() || currSale.isBlank()){
+            return new ArrayList<>(Arrays.asList(1,"Los valores no pueden ser vacios",403));
+        }
+
+        if(currBuy.equals(currSale)){
+            return new ArrayList<>(Arrays.asList(1,"La divisa de compra y venta no pueden ser iguales",403));
+        }
+
+        double saleAmount;
+
+        if(!(currBuy.equals("ars")) && !(currSale.equals("ars"))){
+
+            /*
+             *cotizacion = compraDeCurrSale / ventaDeCurrBuy
+             *amountNewCurr = amount *cotizacion
+             *
+             *
+             * */
+
+//            Double price = buyValue(currSale) / saleValue(currBuy);
+
+            Double price = getPriceAmount(currBuy,currSale,0);
+
+            saleAmount = amount / price;
+
+        } else if ((currBuy.equals("ars"))) {
+
+//            Double price = buyValue(currSale);
+
+            Double price = getPriceAmount(currBuy,currSale,1);
+
+            saleAmount = amount / price;
+
+        }else{
+
+//            Double price = saleValue(currBuy);
+
+            Double price = getPriceAmount(currBuy,currSale,2);
+
+            saleAmount = amount * price;
+        }
+
+
+        return new ArrayList<>(Arrays.asList(0,saleAmount,200));
+    }
 
 }

@@ -78,4 +78,30 @@ public class CurrencyController {
     }
 
 
+    @GetMapping(value="/currency/getBuyAmount")
+    public ResponseEntity<Object> getBuyAmount(
+            @RequestParam Double amount,
+            @RequestParam String currBuy,
+            @RequestParam String currSale) {
+        ArrayList<Object> response = currencyService.getBuyAmount(amount,currBuy.toLowerCase(),currSale.toLowerCase());
+        if((Integer)response.get(0) == 0){
+            return new ResponseEntity<>((Double)response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
+        }else{
+            return new ResponseEntity<>((String)response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
+        }
+    }
+
+    @GetMapping(value="/currency/getSaleAmount")
+    public ResponseEntity<Object> getSaleAmount(
+            @RequestParam Double amount,
+            @RequestParam String currBuy,
+            @RequestParam String currSale) {
+        ArrayList<Object> response = currencyService.getSaleAmount(amount,currBuy.toLowerCase(),currSale.toLowerCase());
+        if((Integer)response.get(0) == 0){
+            return new ResponseEntity<>((Double)response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
+        }else{
+            return new ResponseEntity<>((String)response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
+        }
+    }
+
 }

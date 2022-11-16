@@ -65,6 +65,11 @@ public class TransactionService {
             return new ResponseEntity<>(getMensaje("transaction.createTransaction.missingAccountTo"), HttpStatus.FORBIDDEN);
         }
 
+        //Verificar que la cuenta de origen y de destino sen del mismo tipo (accountType) (CA y CC)
+        if(!(accountRepository.findByNumber(accountFrom).orElse(null).getAccountType().equals(accountRepository.findByNumber(accountTo).orElse(null).getAccountType()))){
+            return new ResponseEntity<>(getMensaje("transaction.createTransaction.differentAccountType"), HttpStatus.FORBIDDEN);
+        }
+
         //Verificar que la cuenta de origen tenga el monto disponible.
         Double availableAmountFrom = accountRepository.findByNumber(accountFrom).orElse(null).getBalance();
         if(availableAmountFrom < amount){
@@ -129,8 +134,10 @@ public class TransactionService {
             return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransactionBuySaleCurr.missingAccountFromOrAccountTo"),403));
         }
 
-        //COMPLETAR
-        //Verificar si los tipos de cuenta son distintos. CA y CC
+        //Verificar que la cuenta de origen y de destino sen del mismo tipo (accountType) (CA y CC)
+        if(!(accFrom.getAccountType().equals(accTo.getAccountType()))){
+            return new ArrayList<>(Arrays.asList(1,getMensaje("transaction.createTransaction.differentAccountType"),403));
+        }
 
         //Verificar si la accFrom es del tipo currSale
         if(!(accFrom.getCurrencyType().equals(CurrencyType.valueOf(currSale)))){
