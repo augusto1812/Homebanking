@@ -30,13 +30,9 @@ public class ClientService {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private MessageSource message;
+    private MessageService messageService;
 
-    public String  getMensaje (String mensaje)
-    {
-        return   message.getMessage(mensaje,null, LocaleContextHolder.getLocale());
 
-    }
 
     public List<ClientDTO> getClients() {
         return clientRepository.findAll().stream().map(ClientDTO::new).collect(toList());
@@ -52,24 +48,24 @@ public class ClientService {
     public ResponseEntity<Object> signUp(String firstName, String lastName,
                                          String email, String password) {
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            return new ResponseEntity<>(getMensaje("cliente.signUp.missingData"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("cliente.signUp.missingData"), HttpStatus.FORBIDDEN);
         }
         if (clientRepository.findByEmail(email).orElse(null) !=  null) {
-            return new ResponseEntity<>(getMensaje("cliente.signUp.emailFound"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("cliente.signUp.emailFound"), HttpStatus.FORBIDDEN);
         }
         Client newClient = clientRepository.save(new Client(firstName, lastName, email, passwordEncoder.encode(password)));
         Account account = accountService.newAccount();
         account.setClient(newClient);
         accountRepository.save(account);
 
-        return new ResponseEntity<>(getMensaje("cliente.signUp.created"),HttpStatus.CREATED);
+        return new ResponseEntity<>(messageService.getMessage("cliente.signUp.created"),HttpStatus.CREATED);
     }
 
     public ResponseEntity<Object> newAccountToClient(Authentication authentication){
 
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
         if (client.getAccounts().size()>=3) {
-            String message3Accounts = message.getMessage("cliente.newAccountToClient.3accounts",null,LocaleContextHolder.getLocale());
+            String message3Accounts = messageService.getMessage("cliente.newAccountToClient.3accounts");
             return new ResponseEntity<>(message3Accounts,HttpStatus.FORBIDDEN);
         }
         Account account = accountService.newAccount();

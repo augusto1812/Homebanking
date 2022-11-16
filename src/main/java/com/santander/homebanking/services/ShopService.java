@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ShopService {
 
     @Autowired
-    MessageSource message;
+    MessageService messageService;
 
     @Autowired
     DiscountRepository discountRepository;
@@ -31,11 +31,7 @@ public class ShopService {
     AccountRepository accountRepository;
     @Autowired
     CardRepository cardRepository;
-    public String  getMensaje (String mensaje)
-    {
-        return   message.getMessage(mensaje,null, LocaleContextHolder.getLocale());
 
-    }
 
     public ResponseEntity<Object> shop(ShopDTO shopDTO) {
         Long cardId = shopDTO.getCardId();
@@ -48,23 +44,23 @@ public class ShopService {
 
         //Valido si alguno de los parametros llega vacio
         if (card == null || sectorType == null || amount.isNaN()) {
-            return new ResponseEntity<>(getMensaje("shop.missingParameters"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("shop.missingParameters"), HttpStatus.FORBIDDEN);
             }
 
             //Valido si la tarjeta esta activa
         if(!card.isActive()){
-            return new ResponseEntity<>(getMensaje("shop.cardNotActive"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("shop.cardNotActive"), HttpStatus.FORBIDDEN);
         }
             //Valido si el sector exise
 
             //Valido si el monto es valido
         if(amount <= 0) {
-            return new ResponseEntity<>(getMensaje("shop.invalidAmount"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("shop.invalidAmount"), HttpStatus.FORBIDDEN);
         }
 
         //Valido si puedo realizar la compra
         if(amount > account.getBalance()) {
-            return new ResponseEntity<>(getMensaje("shop.insufficientMoney"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("shop.insufficientMoney"), HttpStatus.FORBIDDEN);
         }
 
             //Busco por sector y luego por tarjeta el descuento apropiado
@@ -102,6 +98,6 @@ public class ShopService {
         transactionRepository.save(transactionCashback);
 
 
-            return new ResponseEntity<>(getMensaje("shop.ok"), HttpStatus.OK);
+            return new ResponseEntity<>(messageService.getMessage("shop.ok"), HttpStatus.OK);
         }
     }

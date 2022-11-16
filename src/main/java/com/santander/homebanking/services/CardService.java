@@ -34,13 +34,8 @@ public class CardService {
     @Autowired
     private HttpSession session;
     @Autowired
-    private MessageSource message;
+    private MessageService messageService;
 
-    public String  getMensaje (String mensaje)
-    {
-        return   message.getMessage(mensaje,null, LocaleContextHolder.getLocale());
-
-    }
 
 
     LocalDateTime today = LocalDateTime.now();
@@ -51,11 +46,11 @@ public class CardService {
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
         //validacion si tiene 3 tarjetas del mismo tipo
         if(client == null){
-            return new ResponseEntity<>(getMensaje("card.newCardForClient.clientNotFound"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("card.newCardForClient.clientNotFound"), HttpStatus.FORBIDDEN);
         }
 
         if (cardRepository.findByTypeAndClient(cardType,client).size()>= 3){
-            return new ResponseEntity<>(getMensaje("card.newCardForClient.3Cards"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("card.newCardForClient.3Cards"), HttpStatus.FORBIDDEN);
         }
 
         Random random  = new Random();
@@ -73,7 +68,7 @@ public class CardService {
         card.setClient(client);
         cardRepository.save(card);
 
-        return new ResponseEntity<>(getMensaje("card.newCardForClient.created"),HttpStatus.CREATED);
+        return new ResponseEntity<>(messageService.getMessage("card.newCardForClient.created"),HttpStatus.CREATED);
 
     }
 
@@ -83,14 +78,14 @@ public class CardService {
         Card card = client.getCards().stream().filter(cardAux -> cardAux.getId() == id).findFirst().orElse(null);
 
         if (card == null) {
-            return new ResponseEntity<>(getMensaje("card.deleteCard.cardDoesntExists"),HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(messageService.getMessage("card.deleteCard.cardDoesntExists"),HttpStatus.FORBIDDEN);
         }
 
         card.setActive(false);
 
         cardRepository.save(card);
 
-        return new ResponseEntity<>(getMensaje("card.deleteCard.inactiveCard"), HttpStatus.OK);
+        return new ResponseEntity<>(messageService.getMessage("card.deleteCard.inactiveCard"), HttpStatus.OK);
     }
 
 
