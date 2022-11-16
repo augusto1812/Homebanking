@@ -49,6 +49,7 @@ var app = new Vue({
                              axios.get("/api/cashbacks")
                              .then((response) => {
                                  this.cashbacks = response.data;
+
                              })
                              .catch((error)=>{
                                  // handle error
