@@ -66,8 +66,7 @@
                 <div class="row mt-3">
                     <div class="col-10">
                         <h2 class="display-6 subtitle">Currency Prices</h2>
-                        <form class="mt-4">
-
+                        <div class="mt-4">
                             <div class="row mt-3">
                                 <div class="col-md">
                                     <label for="origin" class="form-label">Select first currency</label>
@@ -82,13 +81,17 @@
                                     </select>
                                 </div>
                                 <div class="col-md">
-                                    <button class="btn btn-primary img-fluid" v-on:click="getPricePage" style="margin: 5px;">Consultar</button>
+                                    <button type="button" class="btn btn-primary img-fluid" v-on:click="getPricePage" style="margin: 10%;">Consultar</button>
                                 </div>
                             </div>
                             <div class="row mt-3">
-                                <p>Compra: {{priceData.compra}}</p>
-                                <br>
-                                <p>Venta: {{priceData.venta}}</p>
+                                <div class="card" style="width: 18rem;margin-bottom: 30px;">
+                                    <div class="card-body">
+                                        <p>Buy: {{firstCurrencyPrice}}</p>
+                                        <br>
+                                        <p>Sale: {{secondCurrencyPrice}}</p>
+                                    </div>
+                                </div>
                             </div>
 <!--                            <div class="row mt-3">-->
 <!--                                <div class="col-md-3">-->
@@ -101,47 +104,47 @@
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                            <button type="button" v-on:click="checkTransfer" class="btn btn-sm btn-outline-success mt-4">transfer</button>-->
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="confirModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirModalLabel">Confirm Funds Transfer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Transfer cannot be undone, do you want to continue?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" v-on:click="transfer" class="btn btn-sm btn-outline-success">Yes, transfer the funds</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal 2-->
-    <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="okModalLabel">Transaction complete!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    The funds have been transferred! <i class="bi bi-check-circle-fill text-success"></i>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" v-on:click="finish" class="btn btn-sm btn-outline-success" data-bs-dismiss="modal">Ok</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--    &lt;!&ndash; Modal &ndash;&gt;-->
+<!--    <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="confirModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="confirModalLabel">Confirm Funds Transfer</h5>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    Transfer cannot be undone, do you want to continue?-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>-->
+<!--                    <button type="button" v-on:click="transfer" class="btn btn-sm btn-outline-success">Yes, transfer the funds</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Modal 2&ndash;&gt;-->
+<!--    <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="okModalLabel">Transaction complete!</h5>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    The funds have been transferred! <i class="bi bi-check-circle-fill text-success"></i>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" v-on:click="finish" class="btn btn-sm btn-outline-success" data-bs-dismiss="modal">Ok</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
