@@ -54,7 +54,7 @@ public class HomebankingApplication {
 			repository.save(cliente2);
 
 			Account cuenta3 = new Account("VIN009",9000,cliente2);
-			Account cuenta4 = new Account("VIN008",70,cliente2);
+			Account cuenta4 = new Account("VIN0010",70,cliente2);
 			accountRepository.save(cuenta3);
 			accountRepository.save(cuenta4);
 
