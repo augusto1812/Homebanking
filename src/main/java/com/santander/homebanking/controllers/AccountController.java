@@ -3,7 +3,9 @@ package com.santander.homebanking.controllers;
 import com.santander.homebanking.dtos.AccountDTO;
 import com.santander.homebanking.dtos.ClientDTO;
 import com.santander.homebanking.models.Account;
+import com.santander.homebanking.models.AccountType;
 import com.santander.homebanking.models.Client;
+import com.santander.homebanking.models.CurrencyType;
 import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.ClientRepository;
 import com.santander.homebanking.services.AccountService;
@@ -16,6 +18,7 @@ import org.springframework.security.core.Authentication;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,12 +50,22 @@ public class AccountController {
     }
 
     @PostMapping(value = "clients/current/accounts")
-    public ResponseEntity<Object> newAccount(Authentication authentication){
-        return clientService.newAccountToClient(authentication);
+    public ResponseEntity<Object> newAccount(Authentication authentication, @RequestParam AccountType accountType, @RequestParam CurrencyType currencyType){
+        return clientService.newAccountToClient(authentication, accountType, currencyType);
     }
 
 //    @GetMapping(value = "/{id}/accounts")
 //    public List<AccountDTO> getAllAccountsByClientId(@PathVariable Long id){
 //        return accountService.getAllAccountsByClientId(id);
 //    }
+
+    @GetMapping(value="/account/getTypesAccount")
+    public ResponseEntity<Object> getTypesAccount(){
+        ArrayList<Object> response = accountService.getTypesAccount();
+        return new ResponseEntity<>(response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
+    }
+
+
+
+
 }

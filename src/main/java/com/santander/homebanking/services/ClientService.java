@@ -2,7 +2,9 @@ package com.santander.homebanking.services;
 
 import com.santander.homebanking.dtos.ClientDTO;
 import com.santander.homebanking.models.Account;
+import com.santander.homebanking.models.AccountType;
 import com.santander.homebanking.models.Client;
+import com.santander.homebanking.models.CurrencyType;
 import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.ClientRepository;
 import org.aspectj.bridge.Message;
@@ -54,21 +56,21 @@ public class ClientService {
             return new ResponseEntity<>(messageService.getMessage("cliente.signUp.emailFound"), HttpStatus.FORBIDDEN);
         }
         Client newClient = clientRepository.save(new Client(firstName, lastName, email, passwordEncoder.encode(password)));
-        Account account = accountService.newAccount();
+        Account account = accountService.newAccount(AccountType.CA,CurrencyType.ARS);
         account.setClient(newClient);
         accountRepository.save(account);
 
         return new ResponseEntity<>(messageService.getMessage("cliente.signUp.created"),HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> newAccountToClient(Authentication authentication){
+    public ResponseEntity<Object> newAccountToClient(Authentication authentication, AccountType accountType, CurrencyType currencyType){
 
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
         if (client.getAccounts().size()>=3) {
             String message3Accounts = messageService.getMessage("cliente.newAccountToClient.3accounts");
             return new ResponseEntity<>(message3Accounts,HttpStatus.FORBIDDEN);
         }
-        Account account = accountService.newAccount();
+        Account account = accountService.newAccount(accountType, currencyType);
         account.setClient(client);
         accountRepository.save(account);
 

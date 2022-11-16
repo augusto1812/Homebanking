@@ -18,6 +18,7 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     List<Account> findByBalanceLessThan(Double number);
     @Query("SELECT a FROM Account a WHERE a.id =?1")
     List<Account> getAllAccountsByClientId(Long id);
+    Optional<Account> findByClientAndNumber(Client client, String number);
 
 //    @Query("SELECT a FROM Account a WHERE balance = ?1 and number =? 2")
 //    List<Account> buscarCuentaPorBalanceYNumero(double balance, String number);
