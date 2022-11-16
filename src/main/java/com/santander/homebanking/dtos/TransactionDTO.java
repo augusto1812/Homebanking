@@ -1,12 +1,9 @@
 package com.santander.homebanking.dtos;
-
-import com.santander.homebanking.models.Account;
 import com.santander.homebanking.models.Transaction;
 import com.santander.homebanking.models.TransactionType;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static com.santander.homebanking.utils.MathUtils.round;
 
 public class TransactionDTO {
 
@@ -14,8 +11,6 @@ public class TransactionDTO {
     private TransactionType type;
     private Double amount;
     private String description;
-
-
     private LocalDateTime date;
 
     public TransactionDTO(){}
@@ -27,7 +22,6 @@ public class TransactionDTO {
         this.description = transaction.getDescription();
         this.date = transaction.getDate();
     }
-
 
     public long getId() {
         return id;
@@ -46,7 +40,7 @@ public class TransactionDTO {
     }
 
     public Double getAmount() {
-        return amount;
+        return round(amount);
     }
 
     public void setAmount(Double amount) {

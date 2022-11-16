@@ -7,10 +7,11 @@
           integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Create cards</title>
+    <title>New Question</title>
 </head>
 <body>
 <div id="app">
+    <!--      MSG ERROR   -->
     <div class="toast-container position-absolute p-3 top-0 end-0" id="toastPlacement">
         <div id="danger-toast" data-bs-delay="2000" class="toast align-items-center text-white bg-danger border-0"
              role="alert" aria-live="assertive" aria-atomic="true">
@@ -23,15 +24,15 @@
             </div>
         </div>
     </div>
-
+    <!--CONTAINER-->
     <div class="container bg-light">
         <div class="row mt-5">
+            <!--SIDEBAR-->
             <div class="col-12 col-md-2">
                 <div class="bg-light">
                     <a href="/web/accounts.html"
                        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                         <img class="menu-logo" src="img/logo vinotinto.png">
-                        <span class="fs-5">Banco Vinotinto</span>
                     </a>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
@@ -42,7 +43,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/web/cards.html" class="nav-link active">
+                            <a href="/web/cards.html" class="nav-link link-dark">
                                 <i class="bi bi-credit-card"></i>
                                 Cards
                             </a>
@@ -60,7 +61,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/web/investments.html" class="nav-link link-dark">
+                            <a href="/web/investments.html" class="nav-link active">
                                 <i class="bi bi-bar-chart"></i>
                                 Investments
                             </a>
@@ -71,50 +72,64 @@
                         <button class="btn btn-danger img-fluid" v-on:click="signOut">Sign out</button>
                     </ul>
                 </div>
-            </div>
+            </div> <!--SIDEBAR-END-->
+
             <div class="col offset-md-2">
                 <div class="row mt-3">
                     <div class="col-6">
-                        <h2 class="display-6 subtitle">Create cards</h2>
+                        <h2 class="display-6 subtitle">Create investment</h2>
                         <form class="mt-4" v-on:submit="create($event)">
                             <div class="row mb-3">
-                                <label for="card-type" class="col-sm-4 col-form-label ">Card type:</label>
-                                <div class="col-sm-7">
-                                    <select id="card-type" v-model="cardType" class="form-select"
-                                            aria-label="Default select example" required>
-                                        <option value="none">Open this select menu</option>
-                                        <option value="CREDIT">Credit</option>
-                                        <option value="DEBIT">Debit</option>
+                                <label for="account" class="col-sm-4 col-form-label col-auto">Accounts</label>
+                                <div class="col-md-5 col-auto">
+                                    <select id="account" v-model="accountNumber" class="form-select" required>
+                                        <option value="VIN">Open this select menu</option>
+                                        <option v-for="account in clientAccounts" v-bind:value="account.number">{{account.number }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="card-color" class="col-sm-4 col-form-label">Card Color:</label>
-                                <div class="col-sm-7">
-                                    <select id="card-color" v-model="cardColor" class="form-select"
+                                <label for="period" class="col-sm-4 col-form-label col-auto">Days:</label>
+                                <div class="col-sm-7 col-auto">
+                                    <select id="period" v-model="period" class="form-select"
                                             aria-label="Default select example" required>
                                         <option value="none">Open this select menu</option>
-                                        <option value="SILVER">Silver</option>
-                                        <option value="GOLD">Gold</option>
-                                        <option value="TITANIUM">Titanium</option>
+                                        <option value="PERIOD_30">30 days (5%)</option>
+                                        <option value="PERIOD_60">60 days (11%)</option>
+                                        <option value="PERIOD_90">90 days (16,5%)</option>
+                                        <option value="PERIOD_180">180 days (33%)</option>
+                                        <ption value="PERIOD_365"> 365 days (66%)</ption>
                                     </select>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-sm btn-outline-success">create</button>
-                            <a href="/web/accounts.html" class="btn btn-sm btn-outline-danger">Cancel</a>
+                            <div class="row mb-3">
+                                <label for="amount" class="form-label col-auto">Amount</label>
+                                <div class="col-auto">
+                                    <input id="amount" v-model="amount" type="text" class="form-control"
+                                           placeholder="$1.000" aria-label="to account" pattern="^(0|[1-9][0-9]*)$"
+                                           required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-outline-success">Create</button>
+                            <a href="/web/investments.html" class="btn btn-sm btn-outline-danger">Cancel</a>
                         </form>
                     </div>
                 </div>
+                <div class="row">
+
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </div><!--CONTAINER-END-->
+
+</div><!--APP-END-->
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
-<script src="js/create-cards.js"></script>
+<script src="js/create-longInvestment.js"></script>
 </body>
 </html>

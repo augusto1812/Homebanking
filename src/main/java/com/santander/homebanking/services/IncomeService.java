@@ -1,16 +1,15 @@
 package com.santander.homebanking.services;
 
 import com.santander.homebanking.dtos.LongTermIncomeDTO;
-import com.santander.homebanking.models.Account;
-import com.santander.homebanking.models.LongTermIncome;
-import com.santander.homebanking.models.PeriodType;
-import com.santander.homebanking.models.TransactionType;
-import com.santander.homebanking.repositories.AccountRepository;
-import com.santander.homebanking.repositories.DailyIncomeRepository;
-import com.santander.homebanking.repositories.LongTermIncomeRepository;
-import com.santander.homebanking.repositories.TransactionRepository;
+import com.santander.homebanking.models.*;
+import com.santander.homebanking.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IncomeService {
@@ -21,6 +20,8 @@ public class IncomeService {
     LongTermIncomeRepository longTermIncomeRepository;
     @Autowired
     TransactionService transactionService;
+    @Autowired
+    ClientRepository clientRepository;
 
     public String generatorIncome(LongTermIncomeDTO longTermIncomeDTO){
        Account account =accountRepository.findById(longTermIncomeDTO.getAccountId()).orElse(null);
@@ -37,21 +38,27 @@ public class IncomeService {
 
         LongTermIncome income = new LongTermIncome(account,amount,periodType);
         longTermIncomeRepository.save(income);
-        transactionService.transactionIncome( TransactionType.DEBIT, -amount, "Solicitud de plazo fijo", account);
+        transactionService.transactionIncome( TransactionType.DEBIT, -amount, "Solicitud de plazo fijo. N°: "+ income.getId()+ " ("+ income.getPeriod().getDays()+" days)", account);
         return "accepted";
+    }
+
+    public List<LongTermIncomeDTO> getAllLongIncomes(Authentication authentication){
+        Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
+        List<Account> accounts = client.getAccounts().stream().collect(Collectors.toList());
+        List<LongTermIncomeDTO> incomes = new ArrayList<>();
+        accounts.forEach(account -> {
+            account.getLongTermIncomes().forEach(LongTerm ->
+            {
+                incomes.add(new LongTermIncomeDTO(LongTerm));
+
+            });
+
+
+        });
+
+        return incomes;
     }
 
 }
 
-//    public String generateLongIncome(LongTermIncomeDTO longTermIncomeDTO ){
-//
-//        Account account = accountRepository.findById(id).orElse(null);
-//        LongTermIncome longTermIncome = new LongTermIncome(account,amount,period);
-//        generatorIncome(longTermIncomeDTO);
-//        /*
-//         *   Generar plazo fijo
-//         *   Transaccion de origin account _ DEBIT
-//         *   */
-//
-//        return "";
-//    }
+

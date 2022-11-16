@@ -1,3 +1,27 @@
+/*
+.color1 { #ed5b0a };
+.color2 { #f9ab7f };
+.color3 { #096a4d };
+.color4 { #4f71a5 };
+.color5 { #e1d2cd };
+verde #018790
+verde2 #6CAE75
+naranja #E57A44
+*/
+:root{
+    --blue-sapphire: #28536bff;
+    --rosy-brown: #c2948aff;
+    --pewter-blue: #7ea8beff;
+    --khaki-web: #bbb193ff;
+
+    --indigo-dye: #003d69ff;
+    --bittersweet: #ff6a62ff;
+    --onyx: #404040ff;
+    --cultured: #ecececff;
+    --dark-cyan: #018c8fff;
+}
+
+
 .account{
     background: linear-gradient(45deg,#ee0979,#ff6a00);
     color: white;
@@ -56,4 +80,8 @@
 
 .index-container{
     margin-top: 10%;
+}
+
+.cardInvestment p{
+    margin-bottom: 0.2rem !important;
 }
