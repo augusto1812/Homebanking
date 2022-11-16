@@ -43,7 +43,7 @@ var app = new Vue({
             else{
                this.getAccountId(this.accountNumber)
                axios.post("/api/investments",{periodType: this.period, accountId: this.accountId, amount: this.amount  })
-               .then(response => window.location.href = "/web/investment.html")
+               .then(response => window.location.href = "/web/investments.html")
                 .catch((error) =>{
                     this.errorMsg = error.response.data;
                     this.errorToats.show();

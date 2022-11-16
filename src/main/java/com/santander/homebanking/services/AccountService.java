@@ -66,7 +66,6 @@ public class AccountService {
     //second, minute, hour, day of month, month, day(s) of week
     @Scheduled(cron = "10 * * * * *")
     public void addDailyIncome() {
-
     Set<Account> accounts=accountRepository.findAll().stream().collect(Collectors.toSet());
     accounts.stream().forEach(account ->{
         Double balance=account.getBalance();
@@ -74,8 +73,6 @@ public class AccountService {
         DailyIncome dailyIncome= new DailyIncome(account,interes,0.01);
         dailyIncomeRepository.save(dailyIncome);
         transactionService.transactionIncome(TransactionType.CREDIT,interes,"Acreditacion diaria",account);
-
-
     } );
     }
 
@@ -91,7 +88,7 @@ public class AccountService {
                 x.setActive(false);
                 longTermIncomeRepository.save(x);
                 Double amount = (x.getAmount() * x.getPeriod().getPercentage()) + x.getAmount();
-                transactionService.transactionIncome(TransactionType.CREDIT, amount, "Acreditación plazo fijo", account);
+                transactionService.transactionIncome(TransactionType.CREDIT, amount, "Acreditación plazo fijo. N°:" + x.getId()+" ("+x.getPeriod().getDays()+" days)", account);
             }
         }
     });

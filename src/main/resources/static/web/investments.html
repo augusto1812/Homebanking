@@ -82,18 +82,18 @@
                         <!--CARD-->
                         <div class="card">
                             <div class="card-header">
-                                Long term investment: {{ investment.days }} days.
+                                Long term investment: {{ investment.days }} days
                             </div>
                             <div class="card-body">
                                 <p class="card-text">Account: {{ investment.account }}</p>
                                 <p class="card-text">Amount: {{ investment.amount}}</p>
                                 <p class="card-text">Created: {{ investment.date}} </p>
-                                <div>
-                                    <p class="card-text">isActive, quedan {{x}} days </p>
+                                <div v-if="investment.active == true" >
+                                    <p class="card-text">Active until {{ investment.daysLeft}} days </p>
                                 </div>
-                                <div>
-                                    <p class="card-text">Beneficio: </p>
-                                    <p class="card-text">El saldo se acreditó {{x}} fecha </p>
+                                <div v-else>
+                                    <p class="card-text">Total earnings: ${{ investment.profit}}</p>
+                                    <p class="card-text">Accreditation day: {{ investment.paymentDay}} </p>
                                 </div>
                             </div>
                         </div><!--CARD-END-->

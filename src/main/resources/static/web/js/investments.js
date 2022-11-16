@@ -30,7 +30,7 @@ var app = new Vue({
                 this.errorMsg = "Sign out failed"
                 this.errorToats.show();
             })
-        },
+        }
     },
     mounted: function(){
         this.getData();

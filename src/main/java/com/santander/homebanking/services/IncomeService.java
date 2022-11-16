@@ -38,7 +38,7 @@ public class IncomeService {
 
         LongTermIncome income = new LongTermIncome(account,amount,periodType);
         longTermIncomeRepository.save(income);
-        transactionService.transactionIncome( TransactionType.DEBIT, -amount, "Solicitud de plazo fijo", account);
+        transactionService.transactionIncome( TransactionType.DEBIT, -amount, "Solicitud de plazo fijo. N°: "+ income.getId()+ " ("+ income.getPeriod().getDays()+" days)", account);
         return "accepted";
     }
 
