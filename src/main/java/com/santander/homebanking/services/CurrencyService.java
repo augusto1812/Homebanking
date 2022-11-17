@@ -23,32 +23,14 @@ public class CurrencyService {
     TransactionService transactionService;
 
     @Autowired
-    private MessageSource message;
-
-    public String  getMensaje (String mensaje)
-    {
-        return   message.getMessage(mensaje,null, LocaleContextHolder.getLocale());
-
-    }
+    MessageService messageService;
 
 
     public ArrayList<Object> getPrice(String currBuy, String currSale) {
 
-
-        /*String urlAPI = "https://criptoya.com/api/buenbit/"+currBuy+"/ars";
-        RestTemplate restTemplate = new RestTemplate();
-        CurrencyAPIDTO response = restTemplate.getForEntity(urlAPI, CurrencyAPIDTO.class).getBody();
-
-        CurrencyDTO currencyDTO = new CurrencyDTO(response.getTotalBid(), response.getTotalAsk());*/
-
-
-
-//        return new ArrayList<>(Arrays.asList(0,getCurrencyDTO(currBuy,"ars"),200));
-
         if(currBuy.equals(currSale)){
-            return new ArrayList<>(Arrays.asList(1,"La divisa de compra y venta no pueden ser iguales",403));
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("currencyService.sameCurrencyType"),403));
         }
-
 
         if ((currBuy.equals("ars"))){
 
@@ -82,69 +64,7 @@ public class CurrencyService {
 
         //  /*noARS/ARS
         return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
-
-
-
-
-        //anterior
-
-//        CurrencyDTO currencyDTO = getCurrencyDTO(currBuy,"ars");
-//
-//        if(!(currSale.equals("ars")) && !(currBuy.equals("ars"))){
-//
-//            //  /*noARS/*noARS
-//
-//            //CurrencyDTO currencyDTO = getCurrencyDTO(currBuy,"ars");
-//
-//            currencyDTO.setCompra(currencyDTO.getCompra() / saleValue(currSale));
-//
-//            currencyDTO.setVenta(currencyDTO.getVenta() / saleValue(currSale));
-//
-//            //return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
-//
-//        } else if ((currBuy.equals("ars"))) {
-//
-//            //  /ARS/*noARS
-//
-//            //CurrencyDTO currencyDTO = getCurrencyDTO(currBuy,"ars");
-//
-//            Double buyValueAux= currencyDTO.getCompra();
-//            Double saleValueAux = currencyDTO.getVenta();
-//
-//            currencyDTO.setCompra(1/buyValueAux);
-//            currencyDTO.setVenta(1/saleValueAux);
-//
-//        }
-//
-//        //  /*/ARS
-//
-//        return new ArrayList<>(Arrays.asList(0,currencyDTO,200));
-
-
-
-
-//        return new ArrayList<>(Arrays.asList(1,"Error al consultar la cotizacion",403));
-
     }
-
-    /*
-    btc-ars
-    eth-ars
-    dai-ars
-    usd-ars
-
-    btc-eth
-    btc-dai
-    btc-usd
-
-    eth-btc
-
-    dai-usd
-
-    usd-btc
-
-    ars-btc
-    */
 
     public ArrayList<Object> buySaleCurr(
             Authentication authentication,
@@ -155,7 +75,7 @@ public class CurrencyService {
             String accountTo){
 
         if(currBuy.equals(currSale)){
-            return new ArrayList<>(Arrays.asList(1,"La divisa de compra y venta no pueden ser iguales",403));
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("currencyService.sameCurrencyType"),403));
         }
 
         //amount a vender
@@ -177,23 +97,12 @@ public class CurrencyService {
             return response;
         }
 
-        return new ArrayList<>(Arrays.asList(0,"Compra realizada correctamente",200));
-
-        //return new ArrayList<>(Arrays.asList(1,"Error al realizar la compra",403));
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("currencyService.purchaseOk"),200));
     }
 
     public double getBuySaleAmount(Double amount,String currBuy, String currSale){
 
         if(!(currBuy.equals("ars")) && !(currSale.equals("ars"))){
-
-            /*
-            *cotizacion = compraDeCurrSale / ventaDeCurrBuy
-            *amountNewCurr = amount *cotizacion
-            *
-            *
-            * */
-
-//            Double price = buyValue(currSale) / saleValue(currBuy);
 
             Double price = getPriceAmount(currBuy,currSale,0);
 
@@ -201,15 +110,11 @@ public class CurrencyService {
 
         } else if ((currBuy.equals("ars"))) {
 
-//            Double price = buyValue(currSale);
-
             Double price = getPriceAmount(currBuy,currSale,1);
 
             return amount * price;
 
         }else{
-
-//            Double price = saleValue(currBuy);
 
             Double price = getPriceAmount(currBuy,currSale,2);
 
@@ -222,20 +127,15 @@ public class CurrencyService {
 
         switch(numCase) {
             case 0:
-                // code block
                 return buyValue(currSale) / saleValue(currBuy);
             case 1:
-                // code block
                 return buyValue(currSale);
             case 2:
-                // code block
                 return saleValue(currBuy);
         }
 
         return 0.0;
     }
-
-
 
     public Double buyValue(String curr){
         CurrencyDTO currencyDTOAux = getCurrencyDTO(curr,"ars");
@@ -282,11 +182,11 @@ public class CurrencyService {
     public ArrayList<Object> getBuyAmount(Double amount,String currBuy, String currSale){
 
         if(amount.isNaN() || currBuy.isBlank() || currSale.isBlank()){
-            return new ArrayList<>(Arrays.asList(1,"Los valores no pueden ser vacios",403));
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.emptyValues"),403));
         }
 
         if(currBuy.equals(currSale)){
-            return new ArrayList<>(Arrays.asList(1,"La divisa de compra y venta no pueden ser iguales",403));
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("currencyService.sameCurrencyType"),403));
         }
 
         return new ArrayList<>(Arrays.asList(0,getBuySaleAmount(amount,currBuy,currSale),200));
@@ -296,25 +196,16 @@ public class CurrencyService {
     public ArrayList<Object> getSaleAmount(Double amount,String currBuy, String currSale){
 
         if(amount.isNaN() || currBuy.isBlank() || currSale.isBlank()){
-            return new ArrayList<>(Arrays.asList(1,"Los valores no pueden ser vacios",403));
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.emptyValues"),403));
         }
 
         if(currBuy.equals(currSale)){
-            return new ArrayList<>(Arrays.asList(1,"La divisa de compra y venta no pueden ser iguales",403));
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("currencyService.sameCurrencyType"),403));
         }
 
         double saleAmount;
 
         if(!(currBuy.equals("ars")) && !(currSale.equals("ars"))){
-
-            /*
-             *cotizacion = compraDeCurrSale / ventaDeCurrBuy
-             *amountNewCurr = amount *cotizacion
-             *
-             *
-             * */
-
-//            Double price = buyValue(currSale) / saleValue(currBuy);
 
             Double price = getPriceAmount(currBuy,currSale,0);
 
@@ -322,21 +213,16 @@ public class CurrencyService {
 
         } else if ((currBuy.equals("ars"))) {
 
-//            Double price = buyValue(currSale);
-
             Double price = getPriceAmount(currBuy,currSale,1);
 
             saleAmount = amount / price;
 
         }else{
 
-//            Double price = saleValue(currBuy);
-
             Double price = getPriceAmount(currBuy,currSale,2);
 
             saleAmount = amount * price;
         }
-
 
         return new ArrayList<>(Arrays.asList(0,saleAmount,200));
     }
