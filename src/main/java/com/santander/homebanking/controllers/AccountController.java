@@ -51,7 +51,8 @@ public class AccountController {
 
     @PostMapping(value = "clients/current/accounts")
     public ResponseEntity<Object> newAccount(Authentication authentication, @RequestParam AccountType accountType, @RequestParam CurrencyType currencyType){
-        return clientService.newAccountToClient(authentication, accountType, currencyType);
+        ArrayList<Object> response =  clientService.newAccountToClient(authentication, accountType, currencyType);
+        return new ResponseEntity<>(response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
     }
 
 //    @GetMapping(value = "/{id}/accounts")
