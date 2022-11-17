@@ -7,11 +7,13 @@ import com.santander.homebanking.models.CardColor;
 import com.santander.homebanking.models.CardType;
 import com.santander.homebanking.services.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,6 +30,9 @@ public class LoanController {
     @Transactional
     @PostMapping(value = "/loans")
     public ResponseEntity<Object> createLoan(Authentication authentication, @RequestBody LoanApplicationDTO loanApplicationDTO){
-        return loanService.createLoan(authentication,loanApplicationDTO);
+
+                ArrayList<Object> response=loanService.createLoan(authentication,loanApplicationDTO);
+                return new ResponseEntity<>(response.get(1), HttpStatus.valueOf((Integer)response.get(2)));
+
     }
 }

@@ -81,7 +81,7 @@ public class AccountService {
     //second, minute, hour, day of month, month, day(s) of week
     @Scheduled(cron = "10 * * * * *")
     public void addDailyIncome() {
-        Set<Account> accounts = accountRepository.findAll().stream().collect(Collectors.toSet());
+        Set<Account> accounts = accountRepository.findAll().stream().filter(account -> account.getCurrencyType()==CurrencyType.ARS).collect(Collectors.toSet());
         accounts.stream().forEach(account -> {
             Double balance = account.getBalance();
             Double interes = balance * 0.01;
@@ -95,7 +95,7 @@ public class AccountService {
     @Scheduled(cron = "10 * * * * *")
     public void addLongTerm() {
         String result = "";
-        Set<Account> accounts = accountRepository.findAll().stream().collect(Collectors.toSet());
+        Set<Account> accounts = accountRepository.findAll().stream().filter(account -> account.getCurrencyType()==CurrencyType.ARS).collect(Collectors.toSet());
         accounts.stream().forEach(account -> {
             Set<LongTermIncome> longIncomes = account.getLongTermIncomes();
             for (LongTermIncome x : longIncomes) {

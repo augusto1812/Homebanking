@@ -27,7 +27,8 @@ public class IncomeService {
        Account account =accountRepository.findById(longTermIncomeDTO.getAccountId()).orElse(null);
        Double amount= longTermIncomeDTO.getAmount();
        PeriodType periodType=longTermIncomeDTO.getPeriodType();
-
+        if(account.getCurrencyType()!=CurrencyType.ARS)
+        {return "income.currentTypeFail";}
         if (account == null || amount.isNaN() || periodType == null){
             return "general.missingData";
         }
