@@ -19,21 +19,6 @@ public class CurrencyController {
     @Autowired
     CurrencyService currencyService;
 
-    //BORRAR
-    @GetMapping(value="/currency/dolar")
-    public Object dolar(){
-        String urlAPI = "https://mercados.ambito.com/dolar/oficial/variacion";
-        RestTemplate restTemplate = new RestTemplate();
-        Object returnUSD = restTemplate.getForObject(urlAPI, Object.class);
-
-        LinkedHashMap<String, String> returnUSD2 = restTemplate.getForObject(urlAPI, LinkedHashMap.class);
-
-        String compraVal = returnUSD2.get("compra");
-
-
-        return returnUSD;
-    }
-
     @GetMapping(value="/currency/getPrice/{currBuy}/{currSale}")
     public ResponseEntity<Object> getPrice(
             @PathVariable(name = "currBuy") String currBuy,
@@ -41,7 +26,6 @@ public class CurrencyController {
         ArrayList<Object> response = currencyService.getPrice(currBuy.toLowerCase(),currSale.toLowerCase());
 
         if((Integer)response.get(0) == 0){
-            //CurrencyDTO currencyDTO = (CurrencyDTO)response.get(1);
             return new ResponseEntity<>((CurrencyDTO)response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
         }else{
             return new ResponseEntity<>((String)response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
