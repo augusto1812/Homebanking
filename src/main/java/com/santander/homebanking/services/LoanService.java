@@ -41,6 +41,11 @@ public class LoanService {
         Double amount = loanApplicationDTO.getAmount();
         Integer payments = loanApplicationDTO.getPayments();
         String accountToNumber = loanApplicationDTO.getToAccountNumber();
+        Account accountTo = accountRepository.findByNumber(accountToNumber).orElse(null);
+        if(accountTo.getCurrencyType()!=CurrencyType.ARS){
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("loan.createLoan.accountToDontARG"),403));
+
+        }
         if (idLoan.toString().isBlank() || amount.isNaN() || payments.toString().isBlank() || accountToNumber.isBlank()){
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("loan.createLoan.emptyValues"),403));
 
@@ -62,7 +67,7 @@ public class LoanService {
 
         }
 //        Verificar que la cuenta de destino exista
-        Account accountTo = accountRepository.findByNumber(accountToNumber).orElse(null);
+
         if(accountTo == null){
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("loan.createLoan.accountToDoesntExist"),403));
 
