@@ -63,6 +63,12 @@ Vue.component('sidebar',{
                                                 Benefits
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="/web/buy-sale-currency.html" class="nav-link link-dark">
+                                                <i class="bi bi-currency-exchange"></i>
+                                                Exchanges
+                                            </a>
+                                        </li>
                                     </ul>
                                     <hr>
                                     <ul class="nav nav-pills flex-column mb-auto">
