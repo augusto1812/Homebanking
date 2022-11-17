@@ -12,8 +12,18 @@ naranja #E57A44
 
 
 .account{
-    background: linear-gradient(45deg,#ee0979,#ff6a00);
-    color: white;
+    background: linear-gradient(90deg, rgba(79,113,161,1) 0%, rgba(147,231,221,1) 50%, rgba(126,190,128,1) 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    color: #212529;
+    box-shadow: 1px 1px 5px black;
+}
+
+.credit{
+    background: linear-gradient(90deg, rgba(223,73,71,1) 0%, rgba(247,212,170,1) 50%, rgba(198,82,100,1) 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    color: #212529;
     box-shadow: 1px 1px 5px black;
 }
 
@@ -43,11 +53,6 @@ naranja #E57A44
    color: red;
 }
 
-.credit{
-    background: linear-gradient(45deg,#ee09cf,#0026ff);
-    color: white;
-}
-
 .menu-logo{
     width: 8.5rem;
 }
@@ -67,6 +72,14 @@ naranja #E57A44
     background-attachment: fixed;
 }
 
+/*.card-verde{
+    background: linear-gradient(90deg, rgba(79,113,161,1) 0%, rgba(147,231,221,1) 50%, rgba(126,190,128,1) 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    color: white;
+    box-shadow: 1px 1px 5px black;
+}*/
+
 .index-container{
     margin-top: 10%;
 }
@@ -74,3 +87,5 @@ naranja #E57A44
 .cardInvestment p{
     margin-bottom: 0.2rem !important;
 }
+
+l
