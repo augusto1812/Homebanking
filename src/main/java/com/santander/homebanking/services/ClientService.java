@@ -17,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -47,34 +49,37 @@ public class ClientService {
         return clientRepository.findByEmail(authentication.getName()).map(ClientDTO::new).orElse(null);
     }
 
-    public ResponseEntity<Object> signUp(String firstName, String lastName,
+    public ArrayList<Object> signUp(String firstName, String lastName,
                                          String email, String password) {
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            return new ResponseEntity<>(messageService.getMessage("cliente.signUp.missingData"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.signUp.missingData"), 403));
+
         }
         if (clientRepository.findByEmail(email).orElse(null) !=  null) {
-            return new ResponseEntity<>(messageService.getMessage("cliente.signUp.emailFound"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.signUp.emailFound"), 403));
+
         }
         Client newClient = clientRepository.save(new Client(firstName, lastName, email, passwordEncoder.encode(password)));
         Account account = accountService.newAccount(AccountType.CA,CurrencyType.ARS);
         account.setClient(newClient);
         accountRepository.save(account);
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("cliente.signUp.created"), 201));
 
-        return new ResponseEntity<>(messageService.getMessage("cliente.signUp.created"),HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Object> newAccountToClient(Authentication authentication, AccountType accountType, CurrencyType currencyType){
+    public ArrayList<Object> newAccountToClient(Authentication authentication, AccountType accountType, CurrencyType currencyType){
 
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
         if (client.getAccounts().size()>=3) {
-            String message3Accounts = messageService.getMessage("cliente.newAccountToClient.3accounts");
-            return new ResponseEntity<>(message3Accounts,HttpStatus.FORBIDDEN);
+
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.newAccountToClient.3accounts"), 403));
+
         }
         Account account = accountService.newAccount(accountType, currencyType);
         account.setClient(client);
         accountRepository.save(account);
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("cliente.signUp.created"), 201));
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }
