@@ -33,44 +33,49 @@ public class TransactionService {
 
 
 
-    public ResponseEntity<Object> createTransaction(Authentication authentication,
+    public ArrayList<Object> createTransaction(Authentication authentication,
                                                     Double amount,
                                                     String description,
                                                     String accountFrom,
                                                     String accountTo){
         //Verificar que los parámetros no estén vacíos
         if(amount.isNaN() || description.isBlank() || accountFrom.isBlank() || accountTo.isBlank()){
-            return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.emptyValues"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.emptyValues"),403));
         }
 
         //Verificar que los números de cuenta no sean iguales
         if(accountFrom.equals(accountTo)){
-            return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.equalAccounts"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.equalAccounts"),403));
         }
 
         //Verificar que exista la cuenta de origen
         if (accountRepository.findByNumber(accountFrom).orElse(null) == null){
-            return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.missingAccountFrom"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.missingAccountFrom"),403));
         }
         //Verificar que la cuenta de origen pertenezca al cliente autenticado
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
         if(accountRepository.findAccountsByClient(client).size() == 0 ){
-            return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.invalidAccountFrom"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.invalidAccountFrom"),403));
         }
         //Verificar que exista la cuenta de destino
         if (accountRepository.findByNumber(accountTo).orElse(null) == null){
-            return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.missingAccountTo"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.missingAccountTo"),403));
         }
 
-        //Verificar que la cuenta de origen y de destino sen del mismo tipo (accountType) (CA y CC)
+        //Verificar que la cuenta de origen y de destino son del mismo tipo (accountType) (CA y CC)
         if(!(accountRepository.findByNumber(accountFrom).orElse(null).getAccountType().equals(accountRepository.findByNumber(accountTo).orElse(null).getAccountType()))){
-            return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.differentAccountType"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.differentAccountType"),403));
+        }
+
+        //Verificar que la cuenta de origen y de destino son del mismo tipo de divisa (currencyType)
+        if(!(accountRepository.findByNumber(accountFrom).orElse(null).getCurrencyType().equals(accountRepository.findByNumber(accountTo).orElse(null).getCurrencyType()))){
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.differentCurrencyType"),403));
         }
 
         //Verificar que la cuenta de origen tenga el monto disponible.
         Double availableAmountFrom = accountRepository.findByNumber(accountFrom).orElse(null).getBalance();
         if(availableAmountFrom < amount){
-            return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.poorMoney"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.poorMoney"),403));
         }
         //Crear transacción “DEBIT” asociada a la cuenta de origen
         Account accFrom = accountRepository.findByNumber(accountFrom).orElse(null);
@@ -89,7 +94,7 @@ public class TransactionService {
         accountRepository.save(accTo);
         transactionRepository.save(debit);
         transactionRepository.save(credit);
-        return new ResponseEntity<>(messageService.getMessage("transaction.createTransaction.created"),HttpStatus.CREATED);
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("transaction.createTransaction.created"),201));
     }
 
     public String transactionIncome( TransactionType type, Double amount, String description, Account account){
@@ -150,7 +155,7 @@ public class TransactionService {
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransactionBuySaleCurr.missingAccountFromOrAccountTo"),403));
         }
 
-        //Verificar que la cuenta de origen y de destino sen del mismo tipo (accountType) (CA y CC)
+        //Verificar que la cuenta de origen y de destino son del mismo tipo (accountType) (CA y CC)
         if(!(accFrom.getAccountType().equals(accTo.getAccountType()))){
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("transaction.createTransaction.differentAccountType"),403));
         }

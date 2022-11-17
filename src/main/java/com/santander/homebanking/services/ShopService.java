@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -33,7 +35,7 @@ public class ShopService {
     CardRepository cardRepository;
 
 
-    public ResponseEntity<Object> shop(ShopDTO shopDTO) {
+    public ArrayList<Object> shop(ShopDTO shopDTO) {
         Long cardId = shopDTO.getCardId();
         SectorType sectorType = shopDTO.getSectorType();
         Double amount = shopDTO.getAmount();
@@ -44,23 +46,23 @@ public class ShopService {
 
         //Valido si alguno de los parametros llega vacio
         if (card == null || sectorType == null || amount.isNaN()) {
-            return new ResponseEntity<>(messageService.getMessage("shop.missingParameters"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("shop.missingParameters"),403));
             }
 
             //Valido si la tarjeta esta activa
         if(!card.isActive()){
-            return new ResponseEntity<>(messageService.getMessage("shop.cardNotActive"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("shop.cardNotActive"),403));
         }
             //Valido si el sector exise
 
             //Valido si el monto es valido
         if(amount <= 0) {
-            return new ResponseEntity<>(messageService.getMessage("shop.invalidAmount"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("shop.invalidAmount"),403));
         }
 
         //Valido si puedo realizar la compra
         if(amount > account.getBalance()) {
-            return new ResponseEntity<>(messageService.getMessage("shop.insufficientMoney"), HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("shop.insufficientMoney"),403));
         }
 
             //Busco por sector y luego por tarjeta el descuento apropiado
@@ -98,6 +100,6 @@ public class ShopService {
         transactionRepository.save(transactionCashback);
 
 
-            return new ResponseEntity<>(messageService.getMessage("shop.ok"), HttpStatus.OK);
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("shop.ok"),200));
         }
     }
