@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static com.santander.homebanking.utils.CardUtils.getCardNumber;
 import static com.santander.homebanking.utils.CardUtils.getCvv;
@@ -41,16 +39,18 @@ public class CardService {
     LocalDateTime today = LocalDateTime.now();
     LocalDateTime todayPlus5Years = today.plusYears(5) ;
 
-    public ResponseEntity<Object> newCardForClient(Authentication authentication, CardColor cardColor, CardType cardType){
+    public ArrayList<Object> newCardForClient(Authentication authentication, CardColor cardColor, CardType cardType){
         //obtener info cliente authenticado
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
         //validacion si tiene 3 tarjetas del mismo tipo
         if(client == null){
-            return new ResponseEntity<>(messageService.getMessage("card.newCardForClient.clientNotFound"), HttpStatus.FORBIDDEN);
+
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.clientNotFound"), 403));
         }
 
         if (cardRepository.findByTypeAndClient(cardType,client).size()>= 3){
-            return new ResponseEntity<>(messageService.getMessage("card.newCardForClient.3Cards"), HttpStatus.FORBIDDEN);
+
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.3Cards"), 403));
         }
 
         Random random  = new Random();
@@ -68,24 +68,26 @@ public class CardService {
         card.setClient(client);
         cardRepository.save(card);
 
-        return new ResponseEntity<>(messageService.getMessage("card.newCardForClient.created"),HttpStatus.CREATED);
+
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("card.newCardForClient.created"), 201));
 
     }
 
-    public ResponseEntity<Object> deleteCard(Long id) {
+    public ArrayList<Object> deleteCard(Long id) {
         Client client = (Client) session.getAttribute("client");
 
         Card card = client.getCards().stream().filter(cardAux -> cardAux.getId() == id).findFirst().orElse(null);
 
         if (card == null) {
-            return new ResponseEntity<>(messageService.getMessage("card.deleteCard.cardDoesntExists"),HttpStatus.FORBIDDEN);
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.deleteCard.cardDoesntExists"), 403));
+
         }
 
         card.setActive(false);
 
         cardRepository.save(card);
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("card.deleteCard.inactiveCard"), 200));
 
-        return new ResponseEntity<>(messageService.getMessage("card.deleteCard.inactiveCard"), HttpStatus.OK);
     }
 
 
