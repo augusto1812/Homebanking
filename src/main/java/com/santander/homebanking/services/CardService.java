@@ -1,9 +1,7 @@
 package com.santander.homebanking.services;
 
-import com.santander.homebanking.models.Card;
-import com.santander.homebanking.models.CardColor;
-import com.santander.homebanking.models.CardType;
-import com.santander.homebanking.models.Client;
+import com.santander.homebanking.models.*;
+import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.CardRepository;
 import com.santander.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,9 @@ public class CardService {
     private CardRepository cardRepository;
 
     @Autowired
+     private AccountRepository accountRepository;
+
+    @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
@@ -39,13 +40,21 @@ public class CardService {
     LocalDateTime today = LocalDateTime.now();
     LocalDateTime todayPlus5Years = today.plusYears(5) ;
 
-    public ArrayList<Object> newCardForClient(Authentication authentication, CardColor cardColor, CardType cardType){
+    public ArrayList<Object> newCardForClient(Authentication authentication, CardColor cardColor, CardType cardType,String accountNumber){
         //obtener info cliente authenticado
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
+        Account account = accountRepository.findByNumber(accountNumber).orElse(null);
+        //verifico que la cuenta no sea nula.
+        if(account== null)
+        {return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.accountNotFound"),403));}
         //validacion si tiene 3 tarjetas del mismo tipo
         if(client == null){
 
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.clientNotFound"), 403));
+        }
+        if((client.getAccounts().stream().filter(account1 -> account1.getNumber().equals(accountNumber)).findAny().orElse(null))==null)
+        {
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.accountNotClient"), 403));
         }
 
         if (cardRepository.findByTypeAndClient(cardType,client).size()>= 3){
@@ -64,6 +73,7 @@ public class CardService {
 //        Set<Card> cards = new HashSet<>();
 //        cards.add(card);
 //        client.setCards(new HashSet<>(cards));
+        card.setAccount(account);
         client.getCards().add(card);
         card.setClient(client);
         cardRepository.save(card);
