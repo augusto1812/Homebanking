@@ -70,10 +70,17 @@ public class ClientService {
     public ArrayList<Object> newAccountToClient(Authentication authentication, AccountType accountType, CurrencyType currencyType){
 
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
-        if (client.getAccounts().size()>=3) {
 
+        if(accountType==null||currencyType==null)
+        { return new ArrayList<>(Arrays.asList(1,messageService.getMessage("general.missingData"), 403));}
+
+        if(currencyType==CurrencyType.ARS &&client.getAccounts().stream().filter(account -> account.getCurrencyType()==currencyType).count()>=3)
+        {
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.newAccountToClient.3accounts"), 403));
-
+        }
+        if(currencyType!=CurrencyType.ARS&&client.getAccounts().stream().filter(account -> account.getCurrencyType()==currencyType).count()>=1)
+        {
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.newAccountToClient.1accounts"), 403));
         }
         Account account = accountService.newAccount(accountType, currencyType);
         account.setClient(client);
