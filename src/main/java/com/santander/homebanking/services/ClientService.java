@@ -71,6 +71,9 @@ public class ClientService {
 
         Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
 
+        if(accountType==null||currencyType==null)
+        { return new ArrayList<>(Arrays.asList(1,messageService.getMessage("general.missingData"), 403));}
+
         if(currencyType==CurrencyType.ARS &&client.getAccounts().stream().filter(account -> account.getCurrencyType()==currencyType).count()>=3)
         {
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.newAccountToClient.3accounts"), 403));

@@ -40,10 +40,6 @@ public class AccountService {
     @Autowired
     private LongTermIncomeRepository longTermIncomeRepository;
 
-    public String getMensaje(String mensaje) {
-        return message.getMessage(mensaje, null, LocaleContextHolder.getLocale());
-
-    }
 
     public List<AccountDTO> getAccounts() {
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
