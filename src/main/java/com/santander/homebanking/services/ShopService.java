@@ -75,7 +75,7 @@ public class ShopService {
             //Creo transaccion debit con descuento aplicado
             account.setBalance(account.getBalance() - amountDiscounted);
 
-            Transaction transactionDiscount = new Transaction(TransactionType.DEBIT,amountDiscounted,descriptionDiscount,account);
+            Transaction transactionDiscount = new Transaction(TransactionType.DEBIT,-amountDiscounted,descriptionDiscount,account);
             transactionRepository.save(transactionDiscount);
         } else {
             String descriptionWithoutDiscount = "Compra realizada por: " + amount + ".";

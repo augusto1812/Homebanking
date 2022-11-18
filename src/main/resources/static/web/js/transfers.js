@@ -72,8 +72,12 @@ var app = new Vue({
                 this.accountToNumber = "VIN";
             }
         },
-        finish: function(){
-            window.location.reload();
+        finish: function(bool){
+            if(bool){
+            window.location.reload();}
+            else{
+            window.location.href="/web/accounts.html"
+            }
         },
         signOut: function(){
             axios.post('/api/logout')

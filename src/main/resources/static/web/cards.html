@@ -34,28 +34,33 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <h1 class="display-1">{{ clientInfo.name }} {{ clientInfo.lastName }} {{ clientInfo.email }}</h1>
+                        <h2 class="display-4 subtitle"> {{ clientInfo.lastName }}, {{ clientInfo.firstName }} <i class="bi bi-person-check text-success display-5"></i>  </h2>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col">
-                        <h2 class="display-6 subtitle">Debit Cards</h2>
-                        <a v-if="clientInfo.cards != null && clientInfo.cards.length < 6" href="create-cards.html" id="create" class="btn btn-sm btn-outline-success">Create</a>
-                        <div v-if="debitCards.length <= 0"><span class="small">No debit cards</span></div>
+                    <a v-if="clientInfo.cards.length >= 1 && clientInfo.cards.length <= 6 " href="create-cards.html" id="create" class="btn btn-sm btn-outline-success">Create</a>
+                   </div>
+                </div>
+                <!--DEBIT CARDS-->
+                <div class="row mt-3" v-if="debitCards.length <= 0">
+                    <div class="col">
+                        <h5 class="fw-light"> You don't have debit cards yet, <a href="create-cards.html" class="text-reset fst-italic text-danger"> create one</a></h5>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" v-else>
+                    <h2 class="display-6 subtitle">Debit Cards</h2>
                     <div v-for="card in debitCards" class="plastic-card col-12 col-md-3 mt-2">
                         <div v-bind:class="['plastic-card__front', 'plastic-card__part', card.color.toLowerCase() +'-plastic-card']">
                             <div class="plastic-card__square">
                                 <span class="plastic-card__label">{{ card.type}} {{ card.color }}</span>
                             </div>
                             <img class="plastic-card__front-logo plastic-card__logo"
-                                 src="img/logo vinotinto.png">
+                                 src="img/1.png">
                             <p class="plastic-card_numer">{{ card.number}}</p>
                             <div class="plastic-card__space-60">
                                 <span class="plastic-card__label">card holder</span>
-                                <p class="plastic-card__info">{{ card.cardHolder }}</p>
+                                <p class="plastic-card__info">{{ card.card_holder }}</p>
                             </div>
                             <div class="plastic-card__space-25">
                                 <span class="plastic-card__label">Expires</span>
@@ -63,7 +68,7 @@
                             </div>
                         </div>
 
-                        <div v-bind:class="['plastic-card__back', 'plastic-card__part', card.color.toLowerCase() +'-plastic-card']">
+                        <div :class="['plastic-card__back', 'plastic-card__part', card.color.toLowerCase() +'-plastic-card']">
                             <div class="plastic-card__black-line"></div>
                             <div class="plastic-card__back-content">
                                 <div class="plastic-card__secret">
@@ -73,29 +78,31 @@
                                     <span class="plastic-card__label">{{ card.type}} {{ card.color }}</span>
                                 </div>
                                 <img class="plastic-card__back-logo plastic-card__logo"
-                                     src="img/logo vinotinto.png">
+                                     src="img/1.png">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <!--CREDIT CARDS-->
+                <div class="row mt-3" v-if="creditCards.length <= 0">
                     <div class="col">
-                        <h2 class="display-6">Credit Cards</h2>
-                        <span class="small" v-if="creditCards.length <= 0">No credit cards</span>
+                        <h5 class="fw-light"> You don't have credit cards yet, <a href="create-cards.html" class="text-reset fst-italic text-danger"> create one</a></h5>
                     </div>
                 </div>
-                <div class="row">
+
+                <div class="row" v-else>
+                    <h2 class="display-6 subtitle">Credit Cards</h2>
                     <div v-for="card in creditCards" class="plastic-card col-12 col-md-3 mt-2">
                         <div v-bind:class="['plastic-card__front', 'plastic-card__part', card.color.toLowerCase() +'-plastic-card']">
                             <div class="plastic-card__square">
                                 <span class="plastic-card__label">{{ card.type}} {{ card.color }}</span>
                             </div>
                             <img class="plastic-card__front-logo plastic-card__logo"
-                                 src="img/logo vinotinto.png">
+                                 src="img/1.png">
                             <p class="plastic-card_numer">{{ card.number}}</p>
                             <div class="plastic-card__space-60">
                                 <span class="plastic-card__label">card holder</span>
-                                <p class="plastic-card__info">{{ card.cardHolder }}</p>
+                                <p class="plastic-card__info">{{ card.card_holder }}</p>
                             </div>
                             <div class="plastic-card__space-25">
                                 <span class="plastic-card__label">Expires</span>
@@ -103,7 +110,7 @@
                             </div>
                         </div>
 
-                        <div v-bind:class="['plastic-card__back', 'plastic-card__part', card.color.toLowerCase() +'-plastic-card']">
+                        <div :class="['plastic-card__back', 'plastic-card__part', card.color.toLowerCase() +'-plastic-card']">
                             <div class="plastic-card__black-line"></div>
                             <div class="plastic-card__back-content">
                                 <div class="plastic-card__secret">
@@ -113,7 +120,7 @@
                                     <span class="plastic-card__label">{{ card.type}} {{ card.color }}</span>
                                 </div>
                                 <img class="plastic-card__back-logo plastic-card__logo"
-                                     src="img/logo vinotinto.png">
+                                     src="img/1.png">
                             </div>
                         </div>
                     </div>
