@@ -78,6 +78,10 @@ public class ClientService {
         {
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.newAccountToClient.3accounts"), 403));
         }
+        if(currencyType!=CurrencyType.ARS&&accountType!=AccountType.CA)
+        {
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.newAccountToClient.CA"), 403));
+        }
         if(currencyType!=CurrencyType.ARS&&client.getAccounts().stream().filter(account -> account.getCurrencyType()==currencyType).count()>=1)
         {
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.newAccountToClient.1accounts"), 403));

@@ -18,8 +18,8 @@ public class CardController {
     CardService cardService;
 
     @PostMapping(value = "/clients/current/cards")
-    public ResponseEntity<Object> createCard(Authentication authentication, @RequestParam CardColor cardColor, @RequestParam CardType cardType){
-        ArrayList<Object> response=cardService.newCardForClient(authentication,cardColor,cardType);
+    public ResponseEntity<Object> createCard(Authentication authentication, @RequestParam CardColor cardColor, @RequestParam CardType cardType, @RequestParam  String accountNumber){
+        ArrayList<Object> response=cardService.newCardForClient(authentication,cardColor,cardType,accountNumber);
 
         return new ResponseEntity<>(response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
     }
