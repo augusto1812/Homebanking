@@ -39,7 +39,7 @@
                 <div class="row mt-3">
                     <div class="col">
                         <h2 class="display-6 subtitle">Accounts</h2>
-                        <a v-if="clientInfo.accounts != null && clientInfo.accounts.length < 3" href="create-account.html" id="create" class="btn btn-sm btn-outline-success">Create</a>
+                        <a v-if="clientInfo.accounts != null && clientInfo.accounts.length < 7 " href="create-account.html" id="create" class="btn btn-sm btn-outline-success">Create</a>
                     </div>
                 </div>
                 <div class="row row-cols-3">
@@ -87,6 +87,6 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 <script src="js/accounts.js"></script>
-<script src="views/sidebar.js"></script>
+<script src="components/sidebar.js"></script>
 </body>
 </html>
