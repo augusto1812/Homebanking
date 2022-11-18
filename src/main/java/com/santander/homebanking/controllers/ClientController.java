@@ -1,5 +1,6 @@
 package com.santander.homebanking.controllers;
 
+import com.santander.homebanking.dtos.ClientCurrentDTO;
 import com.santander.homebanking.dtos.ClientDTO;
 
 
@@ -38,6 +39,12 @@ public class ClientController {
     public ClientDTO getClientAuth(Authentication authentication) {
         return clientService.getClientAuth(authentication);
     }
+
+    @GetMapping("/clients/current/profile")
+    public ClientCurrentDTO getClientCurrentDTO(Authentication authentication){
+        return clientService.getCurrentClient(authentication);
+    }
+
 
     @PostMapping(path = "/clients")
     public ResponseEntity<Object> signUp(

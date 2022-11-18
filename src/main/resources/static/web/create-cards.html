@@ -41,7 +41,8 @@
                             <div class="row mb-3">
                                 <label for="origin" class="col-sm-4 col-form-label ">Account number:</label>
                                 <div class="col-sm-7">
-                                    <select id="origin" v-model="accountNumber"  class="form-select" aria-label="Default select example" required>
+                                    <select id="origin" v-model="accountNumber" class="form-select"
+                                            aria-label="Default select example" required>
                                         <option value="VIN">Select one...</option>
                                         <option v-for="account in clientInfo.accounts" :value="account.number">{{ account.number }} </option>
                                     </select>

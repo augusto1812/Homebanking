@@ -2,6 +2,7 @@ package com.santander.homebanking;
 
 import com.santander.homebanking.models.*;
 import com.santander.homebanking.repositories.*;
+import com.santander.homebanking.services.ClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -9,13 +10,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @DataJpaTest
 public class IntegracionJpaTest {
+
     @MockBean
     PasswordEncoder passwordEncoder;
 
@@ -139,5 +144,18 @@ public class IntegracionJpaTest {
         assertEquals(CurrencyType.ARS, account.getCurrencyType());
     }
 
+    @Test
+    void testFindByEmail(){
+        //simulación de verificación del repositorio
+        ClientRepository repository = mock(ClientRepository.class);
+        List<Client> data = Arrays.asList( new Client(),new Client("pepe","ddd","dsjk@fff.com", passwordEncoder.encode("123")));
+        Optional<Client> op = Optional.of(data.get(1));
+        when(repository.findByEmail("dsjk@fff.com")).thenReturn(op);
+
+        ClientService service = new ClientService(repository);
+        Optional<Client> client = service.getClientByEmail("dsjk@fff.com");
+        assertTrue( client.isPresent());
+        assertEquals("dsjk@fff.com", client.get().getEmail());
+    }
 
 }

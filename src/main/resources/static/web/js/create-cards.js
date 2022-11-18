@@ -48,6 +48,7 @@ var app = new Vue({
         },
     },
     mounted: function(){
+        this.getData();
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
     }
 })

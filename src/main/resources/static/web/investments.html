@@ -43,14 +43,20 @@
                 </div>
                 <!--NEW INVESTMENT-->
                 <div class="row">
-                    <div class="col text-end">
+                    <div class="col text-start" v-if="clientInvestments.length >=1">
                         <a type="button" href="create-longInvestment.html" class="btn btn-sm btn-outline-success">New
                             investment</a>
                     </div>
                 </div><!--NEW INVESTMENT-END-->
 
                 <!-- ROW-->
-                <div class="row row-cols-lg-3 row-cols-md-3 row-cols-2 g-3 mt-2">
+                <div class="row mt-2" v-if="clientInvestments.length <= 0">
+                    <div class="col">
+                        <h5 class="fw-light"> You don't have any investment, <a href="create-longInvestment.html" class="text-reset fst-italic"> create one</a></h5>
+                    </div>
+                </div>
+
+                <div class="row row-cols-lg-3 row-cols-md-3 row-cols-2 g-3 mt-2" v-else>
                     <div class="col" v-for="investment in clientInvestments">
                         <!--CARD-->
                         <div class="card cardInvestment"

@@ -88,4 +88,6 @@ naranja #E57A44
     margin-bottom: 0.2rem !important;
 }
 
-l
+.inputNone{
+    border-style:none
+}
