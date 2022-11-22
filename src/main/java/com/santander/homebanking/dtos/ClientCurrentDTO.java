@@ -1,32 +1,28 @@
 package com.santander.homebanking.dtos;
 
-import com.santander.homebanking.models.Account;
 import com.santander.homebanking.models.Client;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ClientDTO {
+public class ClientCurrentDTO {
 
     private long id;
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
+    private String address=null;
+    private String phone=null;
 
     private Set<AccountDTO> accounts = new HashSet<>();
     private Set<ClientLoanDTO> loans = new HashSet<>();
     private Set<CardDTO> cards = new HashSet<>();
 
-    public ClientDTO() {
-    }
-
-    public ClientDTO(Client client) {
-
+    public ClientCurrentDTO(Client client) {
         this.id = client.getId();
+        this.password = client.getPassword();
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
         this.email = client.getEmail();
@@ -35,59 +31,51 @@ public class ClientDTO {
         this.cards = client.getCards().stream().map(CardDTO::new).collect(Collectors.toSet());
     }
 
-    public Set<AccountDTO> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(Set<AccountDTO> accounts) {
-        this.accounts = accounts;
-    }
-
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getPassword() {
+        return password;
+    }
+
+    public Set<AccountDTO> getAccounts() {
+        return accounts;
     }
 
     public Set<ClientLoanDTO> getLoans() {
         return loans;
     }
 
-    public void setLoans(Set<ClientLoanDTO> loans) {
-        this.loans = loans;
-    }
-
     public Set<CardDTO> getCards() {
         return cards;
     }
 
-    public void setCards(Set<CardDTO> cards) {
-        this.cards = cards;
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

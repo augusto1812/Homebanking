@@ -1,5 +1,6 @@
 package com.santander.homebanking.services;
 
+import com.santander.homebanking.dtos.ClientCurrentDTO;
 import com.santander.homebanking.dtos.ClientDTO;
 import com.santander.homebanking.models.Account;
 import com.santander.homebanking.models.AccountType;
@@ -20,12 +21,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
 @Service
 public class ClientService {
-    @Autowired
+
     private ClientRepository clientRepository;
     @Autowired
     private AccountRepository accountRepository;
@@ -36,7 +38,9 @@ public class ClientService {
     @Autowired
     private MessageService messageService;
 
-
+    public ClientService(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
 
     public List<ClientDTO> getClients() {
         return clientRepository.findAll().stream().map(ClientDTO::new).collect(toList());
@@ -45,8 +49,16 @@ public class ClientService {
     public ClientDTO getClient(Long id) {
         return clientRepository.findById(id).map(ClientDTO::new).orElse(null);
     }
+    public ClientCurrentDTO getCurrentClient(Authentication authentication) {
+        return clientRepository.findByEmail(authentication.getName()).map(ClientCurrentDTO::new).orElse(null);
+    }
+
     public ClientDTO getClientAuth(Authentication authentication) {
         return clientRepository.findByEmail(authentication.getName()).map(ClientDTO::new).orElse(null);
+    }
+
+    public Optional<Client> getClientByEmail(String email) {
+        return clientRepository.findByEmail(email);
     }
 
     public ArrayList<Object> signUp(String firstName, String lastName,

@@ -2,16 +2,41 @@ Vue.component('sidebar',{
     props: {
         name: String
     },
+     data: function(){
+        return{
+            clientInfo: {},
+            errorToats: null,
+            errorMsg: null,
+        }
+     },
     methods: {
+        getData: function(){
+                axios.get("/api/clients/current")
+                .then((response) => {
+                    console.log("getData")
+                    //get client ifo
+                    this.clientInfo = response.data;
+                    console.log(this.clientInfo)
+                })
+                .catch((error)=>{
+                    // handle error
+                    this.errorMsg = "Error getting data";
+                    this.errorToats.show();
+                })
+            },
             signOut: function(){
                 axios.post('/api/logout')
                 .then(response => window.location.href="/web/index.html")
                 .catch(() =>{
                     this.errorMsg = "Sign out failed"
                     this.errorToats.show();
-                })
-            },
+               })
+          },
     },
+        mounted: function(){
+            this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
+            this.getData();
+        },
     template : `<div class="col-12 col-md-2 col-lg-2 ">
                                 <div class="bg-light">
                                     <a href="/web/accounts.html"
@@ -20,12 +45,6 @@ Vue.component('sidebar',{
                                     </a>
                                     <hr>
                                     <ul class="nav nav-pills flex-column mb-auto">
-                                    <li class="nav-item">
-                                        <a href="/web/profile.html" class="nav-link link-dark">
-                                            <i class="bi bi-person"></i>
-                                            Profile
-                                        </a>
-                                    </li>
                                         <li class="nav-item">
                                             <a href="/web/accounts.html" class="nav-link link-dark">
                                                 <i class="bi bi-inboxes"></i>
@@ -74,19 +93,19 @@ Vue.component('sidebar',{
                                 <div class="dropdown">
                                     <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                                        id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                                        <strong> nombre</strong>
+                                        <img :src='"https://avatars.dicebear.com/api/adventurer-neutral/"+this.clientInfo.email+".svg"' alt="" width="32" height="32" class="rounded-circle me-2">
+                                        <strong> Hola {{ this.clientInfo.firstName }}</strong>
                                     </a>
                                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-
-                                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                                        <li><a class="dropdown-item" href="/web/profile.html">Profile</a></li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item btn btn-danger img-fluid" v-on:click="signOut" >Sign out</a></li>
+                                        <li>
+                                        <a type="button" class="dropdown-item btn btn-outline-danger img-fluid" v-on:click="signOut" >Sign out</a>
+                                        </li>
                                     </ul>
                                 </div>
-
                                 </div>
                             </div> `,
 

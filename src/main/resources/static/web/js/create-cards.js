@@ -5,8 +5,22 @@ var app = new Vue({
         errorMsg: null,
         cardType:"none",
         cardColor:"none",
+        accountNumber:"",
+        clientInfo: {}
     },
     methods:{
+        getData: function(){
+            axios.get("/api/clients/current")
+            .then((response) => {
+                //get client ifo
+                this.clientInfo = response.data;
+            })
+            .catch((error)=>{
+                // handle error
+                this.errorMsg = "Error getting data";
+                this.errorToats.show();
+            })
+        },
         formatDate: function(date){
             return new Date(date).toLocaleDateString('en-gb');
         },
@@ -20,25 +34,21 @@ var app = new Vue({
         },
         create: function(event){
             event.preventDefault();
-            if(this.cardType == "none" || this.cardColor == "none"){
-                this.errorMsg = "You must select a card type and color";  
+            if(this.cardType == "none" || this.cardColor == "none" || this.accountNumber == ""){
+                this.errorMsg = "You must select a card type, color and account";
                 this.errorToats.show();
             }else{
-                let config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    }
-                }
-                axios.post(`http://localhost:8080/api/clients/current/cards?cardType=${this.cardType}&cardColor=${this.cardColor}`,config)
+                axios.post(`http://localhost:8080/api/clients/current/cards?cardType=${this.cardType}&cardColor=${this.cardColor}&accountNumber=${this.accountNumber}`)
                 .then(response => window.location.href = "/web/cards.html")
                 .catch((error) =>{
                     this.errorMsg = error.response.data;  
                     this.errorToats.show();
                 })
             }
-        }
+        },
     },
     mounted: function(){
+        this.getData();
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
     }
 })

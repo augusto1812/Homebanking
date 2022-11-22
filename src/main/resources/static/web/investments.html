@@ -32,36 +32,56 @@
             <template>
                 <sidebar/>
             </template>
-        <!--SIDEBAR-END-->
+            <!--SIDEBAR-END-->
 
             <!--CARDS-COLUMN-GENERAL-->
             <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h2 class="display-6 subtitle">Investments</h2>
+                    </div>
+                </div>
                 <!--NEW INVESTMENT-->
                 <div class="row">
-                    <div class="col text-end">
-                        <a type="button" href="create-longInvestment.html" class="btn btn-sm btn-outline-success">New investment</a>
+                    <div class="col text-start" v-if="clientInvestments.length >=1">
+                        <a type="button" href="create-longInvestment.html" class="btn btn-sm btn-outline-success">New
+                            investment</a>
                     </div>
                 </div><!--NEW INVESTMENT-END-->
 
                 <!-- ROW-->
-                <div class="row row-cols-lg-3 row-cols-md-3 row-cols-2 g-3 mt-2">
-                    <div class="col" v-for="investment in clientInvestments" >
-                        <!--CARD-->
-                        <div class="card cardInvestment" v-bind:class="[ investment.active ? 'border-dark' : 'border-success' ]" >
-                            <div class="card-header">Long term investment: <small  class="fw-bold">{{ investment.days }} days </small >
-                            </div>
-                            <div class="card-body" v-bind:class="[ investment.active ? 'text-dark' : 'text-success' ]">
-                                <p class="card-text fw-bold">Account: <small class="fw-normal">{{ investment.account }}</small></p>
-                                <p class="card-text fw-bold">Id: <small class="fw-normal">{{ investment.id }}</small></p>
+                <div class="row mt-2" v-if="clientInvestments.length <= 0">
+                    <div class="col">
+                        <h5 class="fw-light"> You don't have any investment, <a href="create-longInvestment.html" class="text-reset fst-italic"> create one</a></h5>
+                    </div>
+                </div>
 
-                                <p class="card-text fw-bold">Amount: <small class="fw-normal"> ${{ investment.amount}}</small></p>
-                                <p class="card-text fw-bold">Created: <small class="fw-normal">{{ investment.date}}</small> </p>
-                                <div v-if="investment.active == true" >
-                                    <p class="card-text fst-italic text-warning">Active within {{ investment.daysLeft}} days </p>
+                <div class="row row-cols-lg-3 row-cols-md-3 row-cols-2 g-3 mt-2" v-else>
+                    <div class="col" v-for="investment in clientInvestments">
+                        <!--CARD-->
+                        <div class="card cardInvestment"
+                             :class="[ investment.active ? 'border-dark' : 'border-success' ]">
+                            <div class="card-header">Long term investment: <small class="fw-bold">{{ investment.days }}
+                                days </small>
+                            </div>
+                            <div class="card-body" :class="[ investment.active ? 'text-dark' : 'text-success' ]">
+                                <p class="card-text fw-bold">Account: <small class="fw-normal">{{ investment.account
+                                    }}</small></p>
+                                <p class="card-text fw-bold">Id: <small class="fw-normal">{{ investment.id }}</small>
+                                </p>
+
+                                <p class="card-text fw-bold">Amount: <small class="fw-normal"> ${{
+                                    investment.amount}}</small></p>
+                                <p class="card-text fw-bold">Created: <small class="fw-normal">{{
+                                    investment.date}}</small></p>
+                                <div v-if="investment.active == true">
+                                    <p class="card-text fst-italic text-warning">Active within {{ investment.daysLeft}}
+                                        days </p>
                                 </div>
 
                                 <div v-else>
-                                    <p class="card-text fw-bold">Total earnings: <small class="fw-normal">${{ investment.profit}}</small></p>
+                                    <p class="card-text fw-bold">Total earnings: <small class="fw-normal">${{
+                                        investment.profit}}</small></p>
                                     <p class="card-text fst-italic">Accreditation day: {{ investment.paymentDay}} </p>
                                 </div>
                             </div>

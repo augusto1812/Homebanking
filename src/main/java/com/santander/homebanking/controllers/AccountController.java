@@ -10,6 +10,7 @@ import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.ClientRepository;
 import com.santander.homebanking.services.AccountService;
 import com.santander.homebanking.services.ClientService;
+import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class AccountController {
         return accountService.getCurrentClientAccounts(authentication);
     }
 
-    @PostMapping(value = "clients/current/accounts")
+    @PostMapping( value = "clients/current/accounts")
     public ResponseEntity<Object> newAccount(Authentication authentication, @RequestParam AccountType accountType, @RequestParam CurrencyType currencyType){
         ArrayList<Object> response =  clientService.newAccountToClient(authentication, accountType, currencyType);
         return new ResponseEntity<>(response.get(1),HttpStatus.valueOf((Integer)response.get(2)));
