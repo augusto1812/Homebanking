@@ -44,67 +44,170 @@
 
                 <div class="row">
                     <div class="col">
-
-                        <div class="card mb-4">
-
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0">Full Name</p>
+                        <template v-if="!showEditProfile">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Full Name</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input disabled type="text" class="text-muted mb-0 inputNone"
+                                                   :value="clientInfo.firstName+', '+clientInfo.lastName"/>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-9">
-                                        <input disabled type="text" class="text-muted mb-0 inputNone"
-                                               :value="clientInfo.firstName+', '+clientInfo.lastName"/>
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Email</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input disabled type="text" class="text-muted mb-0 inputNone"
+                                                   :value='clientInfo.email'/>
+                                        </div>
                                     </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Password</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input disabled type="password" class="text-muted mb-0 inputNone"
+                                                   :value='clientInfo.password'/>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Phone/Mobile</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0" v-if="clientInfo.phone == null"> no phone
+                                                registered
+                                                yet</p>
+                                            <p class="text-muted mb-0" v-else> {{clientInfo.phone}}</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Address</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0" v-if="clientInfo.address == null"> no address
+                                                registered yet</p>
+                                            <p class="text-muted mb-0" v-else> {{clientInfo.address}} </p>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <hr>
-
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0">Email</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <input disabled type="text" class="text-muted mb-0 inputNone"
-                                               :value='clientInfo.email'/>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0">Password</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <input disabled type="password" class="text-muted mb-0 inputNone"
-                                               :value='clientInfo.password'/>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <p class="mb-0">Phone/Mobile</p>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <p class="text-muted mb-0" v-if="clientInfo.phone == null"> no phone registered
-                                            yet</p>
-                                        <p class="text-muted mb-0" v-else> {{clientInfo.phone}}</p>
-                                    </div>
-                                </div>
-                                <hr>
-                                                            <div class="row">
-                                                                <div class="col-sm-3">
-                                                                    <p class="mb-0">Address</p>
-                                                                </div>
-                                                                <div class="col-sm-9">
-                                                                    <p class="text-muted mb-0" v-if="clientInfo.address == null"> no address registered yet</p>
-                                                                    <p class="text-muted mb-0" v-else> {{clientInfo.address}} </p>
-                                                                </div>
-                                                            </div>
-
                             </div>
-                        </div>
-                    </div>
+                        </template>
+                        <template v-else>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Full Name</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input disabled type="text" class="text-muted mb-0 inputNone"
+                                                   :value="clientInfo.firstName+', '+clientInfo.lastName"/>
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Email</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input disabled type="text" class="text-muted mb-0 inputNone"
+                                                   :value='clientInfo.email'/>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Actual password</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="input-group" v-if="show_hide_password">
+                                                <input type="password" class="text-muted mb-0"
+                                                       placeholder="Your actual password" required/>
+                                                <div class="input-group-addon">
+                                                    <a @click.self="passwordToggle"><i class="bi bi-eye-slash" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="input-group" v-else>
+                                                <input type="text" class="text-muted mb-0"
+                                                       placeholder="Your actual password" required/>
+                                                <div class="input-group-addon">
+                                                    <a @click.self="passwordToggle"><i class="bi bi-eye"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">New password</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="input-group" v-if="show_hide_password">
+                                                <input type="password" class="text-muted mb-0"
+                                                       placeholder="Your new password" required/>
+                                                <div class="input-group-addon">
+                                                    <a @click.self="passwordToggle"><i class="bi bi-eye-slash" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="input-group" v-else>
+                                                <input type="text" class="text-muted mb-0"
+                                                        placeholder="Your new password" required/>
+                                                <div class="input-group-addon">
+                                                    <a @click.self="passwordToggle"><i class="bi bi-eye"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Phone/Mobile</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input v-if="clientInfo.phone == null" type="text" class="text-muted mb-0"
+                                                   placeholder='no phone registered yet' required/>
+                                            <input v-else ype="text" class="text-muted mb-0"
+                                                   :value='clientInfo.phone'/>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Address</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input v-if="clientInfo.address == null" type="text" class="text-muted mb-0"
+                                                   placeholder='no address registered yet' required/>
+                                            <input v-else ype="text" class="text-muted mb-0"
+                                                   :value='clientInfo.address'/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </template>
+                        <template v-if="!showEditProfile">
+                            <a @click="showEditToogle" class="btn btn-sm btn-outline-success">Edit data</a>
+                        </template>
+                        <template v-if="showEditProfile">
+                            <a @click="" class="btn btn-sm btn-outline-success">Save data</a>
+                        </template>
+                    </div> <!--COL-END-->
                 </div>
+
             </div><!--PROFILE-END-->
         </div>
     </div>

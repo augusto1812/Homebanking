@@ -2,22 +2,19 @@ package com.santander.homebanking.services;
 
 import com.santander.homebanking.dtos.ClientCurrentDTO;
 import com.santander.homebanking.dtos.ClientDTO;
+import com.santander.homebanking.dtos.ClientUpdateDTO;
 import com.santander.homebanking.models.Account;
 import com.santander.homebanking.models.AccountType;
 import com.santander.homebanking.models.Client;
 import com.santander.homebanking.models.CurrencyType;
 import com.santander.homebanking.repositories.AccountRepository;
 import com.santander.homebanking.repositories.ClientRepository;
-import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +24,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class ClientService {
-
+    @Autowired
     private ClientRepository clientRepository;
     @Autowired
     private AccountRepository accountRepository;
@@ -37,11 +34,23 @@ public class ClientService {
     private AccountService accountService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private HttpSession session;
 
+    /* CONSTRUCTORS*/
+    public ClientService() {
+    }
     public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
+  public ClientService(ClientRepository clientRepository, AccountRepository accountRepository, AccountService accountService, MessageService messageServ) {
+        this.clientRepository = clientRepository;
+        this.accountRepository = accountRepository;
+        this.accountService = accountService;
+        this.messageService = messageServ;
+    }
 
+    /*METHODS*/
     public List<ClientDTO> getClients() {
         return clientRepository.findAll().stream().map(ClientDTO::new).collect(toList());
     }
@@ -79,9 +88,9 @@ public class ClientService {
 
     }
 
-    public ArrayList<Object> newAccountToClient(Authentication authentication, AccountType accountType, CurrencyType currencyType){
+    public ArrayList<Object> newAccountToClient(String email, AccountType accountType, CurrencyType currencyType){
 
-        Client client = clientRepository.findByEmail(authentication.getName()).orElse(null);
+        Client client = clientRepository.findByEmail(email).orElse(null);
 
         if(accountType==null||currencyType==null)
         { return new ArrayList<>(Arrays.asList(1,messageService.getMessage("general.missingData"), 403));}
@@ -102,7 +111,18 @@ public class ClientService {
         account.setClient(client);
         accountRepository.save(account);
         return new ArrayList<>(Arrays.asList(0,messageService.getMessage("cliente.signUp.created"), 201));
-
     }
 
+    public ArrayList<Object> updateDataClient(String email,ClientUpdateDTO clientUpdateDTO){
+        Client client = clientRepository.findByEmail(email).orElse(null);
+        Boolean pass = passwordEncoder.matches(clientUpdateDTO.getPassword(), client.getPassword());
+        if (!pass){
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.updateData.passWrong"), 403));
+        }
+        client.setPassword(passwordEncoder.encode(clientUpdateDTO.getNewPassword()));
+        client.setAddress(clientUpdateDTO.getAddress());
+        client.setPhone(clientUpdateDTO.getPhone());
+        clientRepository.save(client);
+        return new ArrayList<>(Arrays.asList(0,messageService.getMessage("cliente.updateData.update"), 201));
+    }
 }

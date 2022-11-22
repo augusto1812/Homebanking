@@ -23,7 +23,7 @@
         <div class="container index-container">
             <div class="row justify-content-center">
                 <div class="col-md-12 col-lg-10">
-                    <div class="wrap d-md-flex justify-content-center bg-light shadow">
+                    <div class="wrap d-md-flex justify-content-center welcome shadow rounded-3">
                         <div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last welcome shadow-sm">
                             <div class="text w-100 text-white">
                                 <img class="welcome-logo" src="img/1.png">
@@ -39,16 +39,16 @@
                             <template v-if="!showSignUp">
                                 <div class="d-flex">
                                     <div class="w-100">
-                                        <h3 class="mb-4">Sign In</h3>
+                                        <h3 class="mb-4 text-white">Sign In</h3>
                                     </div>
                                 </div>
                                 <form action="#" class="signin-form" v-on:submit="signIn($event)">
                                     <div class="form-group mb-3">
-                                        <label class="label" for="email">Email</label>
+                                        <label class="label text-white" for="email">Email</label>
                                         <input v-model="email" id="email" type="email" class="form-control" placeholder="email@mail.com" required>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="label" for="password">Password</label>
+                                        <label class="label text-white" for="password">Password</label>
                                         <input v-model="password" id="password" type="password" class="form-control" placeholder="Password" required autocomplete="off">
                                     </div>
                                     <div class="form-group">
@@ -59,24 +59,24 @@
                             <template v-else>
                                 <div class="d-flex">
                                     <div class="w-100">
-                                        <h3 class="mb-4">Sign Up</h3>
+                                        <h3 class="mb-4 text-white">Sign Up</h3>
                                     </div>
                                 </div>
                                 <form action="#" class="signout-form" v-on:submit="signUp($event)">
                                     <div class="form-group mb-3">
-                                        <label class="label" for="firstName">First name</label>
+                                        <label class="label text-white" for="firstName">First name</label>
                                         <input v-model="firstName" id="firstName" type="text" class="form-control" placeholder="Juan" required>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="lastName" for="lastName">Last name</label>
+                                        <label class="lastName text-white" for="lastName">Last name</label>
                                         <input v-model="lastName" id="lastName" type="text" class="form-control" placeholder="Martinez" required>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="label" for="remail">Email</label>
+                                        <label class="label text-white" for="remail">Email</label>
                                         <input v-model="email" id="remail" type="email" class="form-control" placeholder="email@mail.com" required>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="label" for="rpassword">Password</label>
+                                        <label class="label text-white" for="rpassword">Password</label>
                                         <input v-model="password" id="rpassword" type="password" class="form-control" placeholder="Password" required autocomplete="off">
                                     </div>
                                     <div class="form-group">

@@ -13,8 +13,8 @@ public class ClientCurrentDTO {
     private String lastName;
     private String email;
     private String password;
-    private String address=null;
-    private String phone=null;
+    private String address;
+    private String phone;
 
     private Set<AccountDTO> accounts = new HashSet<>();
     private Set<ClientLoanDTO> loans = new HashSet<>();
@@ -26,6 +26,8 @@ public class ClientCurrentDTO {
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
         this.email = client.getEmail();
+        this.address = client.getAddress();
+        this.phone = client.getPhone();
         this.accounts = client.getAccounts().stream().map(AccountDTO::new).collect(Collectors.toSet());
         this.loans = client.getClientLoans().stream().map(ClientLoanDTO::new).collect(Collectors.toSet());
         this.cards = client.getCards().stream().map(CardDTO::new).collect(Collectors.toSet());

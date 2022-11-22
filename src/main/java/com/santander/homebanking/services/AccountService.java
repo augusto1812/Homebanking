@@ -17,11 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.santander.homebanking.utils.AccountUtils.getNumeroCuenta;
@@ -29,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class AccountService {
+
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -40,6 +37,9 @@ public class AccountService {
     @Autowired
     private LongTermIncomeRepository longTermIncomeRepository;
 
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     public List<AccountDTO> getAccounts() {
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
@@ -103,5 +103,10 @@ public class AccountService {
                 }
             }
         });
+    }
+
+    /* TEST*/
+    public Optional<Account> getAccountByNumber(String number){
+        return accountRepository.findByNumber(number);
     }
 }
