@@ -4,6 +4,8 @@ var app = new Vue({
         clientInfo: {},
         errorToats: null,
         errorMsg: null,
+        showEditProfile: false,
+        show_hide_password: false,
     },
     methods:{
         getData: function(){
@@ -20,6 +22,12 @@ var app = new Vue({
         },
         formatDate: function(date){
             return new Date(date).toLocaleDateString('en-gb');
+        },
+        showEditToogle: function(){
+            this.showEditProfile = !this.showEditProfile;
+        },
+        passwordToggle: function(){
+            this.show_hide_password = !this.show_hide_password
         },
     },
     mounted: function(){

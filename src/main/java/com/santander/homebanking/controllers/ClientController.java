@@ -4,6 +4,8 @@ import com.santander.homebanking.dtos.ClientCurrentDTO;
 import com.santander.homebanking.dtos.ClientDTO;
 
 
+import com.santander.homebanking.dtos.ClientUpdateDTO;
+import com.santander.homebanking.dtos.ShopDTO;
 import com.santander.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,4 +56,9 @@ public class ClientController {
         return new ResponseEntity<>(response.get(1), HttpStatus.valueOf((Integer)response.get(2)));
     }
 
+    @PostMapping(value = "/clients/current/profile")
+    public ResponseEntity<Object> updateProfile(Authentication authentication,@RequestBody ClientUpdateDTO clientUpdateDTO){
+        ArrayList<Object> response = clientService.updateDataClient(authentication.getName(),clientUpdateDTO);
+        return new ResponseEntity<>(response.get(1), HttpStatus.valueOf((Integer)response.get(2)));
+    }
 }

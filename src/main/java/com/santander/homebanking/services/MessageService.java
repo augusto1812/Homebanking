@@ -11,6 +11,11 @@ public class MessageService {
     @Autowired
     private MessageSource message;
 
+    public MessageService(MessageSource message) {
+        this.message = message;
+    }
+
+
     public String getMessage(String msg) {
         return message.getMessage(msg, null, LocaleContextHolder.getLocale());
     }
