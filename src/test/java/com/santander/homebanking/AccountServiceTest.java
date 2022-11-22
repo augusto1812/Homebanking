@@ -12,6 +12,7 @@ import com.santander.homebanking.services.MessageService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +24,12 @@ import static org.mockito.Mockito.when;
 
 public class AccountServiceTest {
 
+    PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
     ClientRepository repositoryCli = mock(ClientRepository.class);
     AccountRepository repositoryAcc = mock(AccountRepository.class);
     AccountService serviceAcc = new AccountService(repositoryAcc);
     MessageService msgService = new MessageService( mock(MessageSource.class) );
-    ClientService serviceCli = new ClientService(repositoryCli,repositoryAcc,serviceAcc, msgService);
+    ClientService serviceCli = new ClientService(repositoryCli,repositoryAcc,serviceAcc, msgService,passwordEncoder);
 
     /*   DATA   */
     List<Client> dataClients = Arrays.asList(

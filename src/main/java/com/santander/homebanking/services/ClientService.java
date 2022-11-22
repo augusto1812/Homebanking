@@ -24,30 +24,23 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class ClientService {
-    @Autowired
+
     private ClientRepository clientRepository;
-    @Autowired
     private AccountRepository accountRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private AccountService accountService;
-    @Autowired
     private MessageService messageService;
     @Autowired
     private HttpSession session;
 
     /* CONSTRUCTORS*/
-    public ClientService() {
-    }
-    public ClientService(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-    }
-  public ClientService(ClientRepository clientRepository, AccountRepository accountRepository, AccountService accountService, MessageService messageServ) {
+
+    public ClientService(ClientRepository clientRepository, AccountRepository accountRepository, AccountService accountService, MessageService messageServ, PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
         this.accountRepository = accountRepository;
         this.accountService = accountService;
         this.messageService = messageServ;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /*METHODS*/
