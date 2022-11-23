@@ -102,10 +102,10 @@ public class HomebankingApplication {
 			mapF.put(CardColor.SILVER,7.0);
 			mapF.put(CardColor.TITANIUM,13.0);
 
-			Discount discount1 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana,mapC);
-			Discount discount2 = new Discount(SectorType.TECHNOLOGY,fechaHoy,fechaManiana,mapT);
-			Discount discount3 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana,mapP);
-			Discount discount4 = new Discount(SectorType.SUPERMARKET,fechaHoy,fechaManiana,mapF);
+			Discount discount1 = new Discount(SectorType.CLOTHING,fechaHoy,fechaManiana.plusMonths(5),mapC);
+			Discount discount2 = new Discount(SectorType.TECHNOLOGY,fechaHoy,fechaManiana.plusMonths(5),mapT);
+			Discount discount3 = new Discount(SectorType.PHARMACY,fechaHoy,fechaManiana.plusMonths(5),mapP);
+			Discount discount4 = new Discount(SectorType.SUPERMARKET,fechaHoy,fechaManiana.plusMonths(5),mapF);
 
 			discountRepository.save(discount1);
 			discountRepository.save(discount2);
