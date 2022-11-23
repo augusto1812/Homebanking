@@ -55,7 +55,6 @@ public class ShopService {
         if(!card.isActive()){
             return new ResponseEntity<>(getMensaje("shop.cardNotActive"), HttpStatus.FORBIDDEN);
         }
-            //Valido si el sector exise
 
             //Valido si el monto es valido
         if(amount <= 0) {
