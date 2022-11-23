@@ -36,6 +36,10 @@ public class IncomeService {
         if( accountRepository.findById( account.getId()).orElse(null) == null){
           return "transaction.createTransaction.missingAccountFrom";
         }
+        if(amount>account.getBalance())
+        {
+            return "income.amountMax";
+        }
 
         LongTermIncome income = new LongTermIncome(account,amount,periodType);
         longTermIncomeRepository.save(income);

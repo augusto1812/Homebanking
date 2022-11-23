@@ -144,18 +144,5 @@ public class IntegracionJpaTest {
         assertEquals(CurrencyType.ARS, account.getCurrencyType());
     }
 
-    @Test
-    void testFindByEmail(){
-        //simulación de verificación del repositorio
-        ClientRepository repository = mock(ClientRepository.class);
-        List<Client> data = Arrays.asList( new Client(),new Client("pepe","ddd","dsjk@fff.com", passwordEncoder.encode("123")));
-        Optional<Client> op = Optional.of(data.get(1));
-        when(repository.findByEmail("dsjk@fff.com")).thenReturn(op);
-
-        ClientService service = new ClientService(repository);
-        Optional<Client> client = service.getClientByEmail("dsjk@fff.com");
-        assertTrue( client.isPresent());
-        assertEquals("dsjk@fff.com", client.get().getEmail());
-    }
 
 }

@@ -53,7 +53,6 @@ public class ShopService {
         if(!card.isActive()){
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("shop.cardNotActive"),403));
         }
-            //Valido si el sector exise
 
             //Valido si el monto es valido
         if(amount <= 0) {
