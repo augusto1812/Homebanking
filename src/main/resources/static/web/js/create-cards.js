@@ -38,7 +38,7 @@ var app = new Vue({
                 this.errorMsg = "You must select a card type, color and account";
                 this.errorToats.show();
             }else{
-                axios.post(`http://localhost:8080/api/clients/current/cards?cardType=${this.cardType}&cardColor=${this.cardColor}&accountNumber=${this.accountNumber}`)
+                axios.post(`/api/clients/current/cards?cardType=${this.cardType}&cardColor=${this.cardColor}&accountNumber=${this.accountNumber}`)
                 .then(response => window.location.href = "/web/cards.html")
                 .catch((error) =>{
                     this.errorMsg = error.response.data;  

@@ -48,7 +48,7 @@
                 </div>
                 <div class="row row-cols-3">
                     <div v-for="account in clientInfo.accounts" class="col mt-2">
-                        <a class="account-link" :href="'http://localhost:8080/web/account.html?id='+account.id">
+                        <a class="account-link" :href="'/web/account.html?id='+account.id">
                             <div class="card border-0 account">
                                 <div class="card-body">
                                     <h5 class="card-title text-white">{{ account.number }} </h5>
