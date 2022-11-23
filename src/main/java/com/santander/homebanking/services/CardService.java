@@ -48,6 +48,10 @@ public class CardService {
         if(account== null)
         {return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.accountNotFound"),403));}
         //validacion si tiene 3 tarjetas del mismo tipo
+        if(account.getCurrencyType()!=CurrencyType.ARS)
+        {
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.accountNotARS"),403));
+        }
         if(client == null){
 
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("card.newCardForClient.clientNotFound"), 403));
