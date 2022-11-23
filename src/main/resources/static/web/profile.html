@@ -179,10 +179,9 @@
                                                 <p class="mb-0">Phone/Mobile</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <input v-if="clientInfo.phone == null" type="text"
-                                                       class="text-muted mb-0"
-                                                       placeholder='no phone registered yet' required/>
-                                                <input v-else v-model="phoneModel" type="text" class="text-muted mb-0"/>
+                                                <input v-if='clientInfo.phone != null || clientInfo.phone != "" ' type="text"
+                                                       class="text-muted mb-0" v-model="phoneModel" required/>
+                                                <input v-else type="text" class="text-muted mb-0" placeholder='no phone registered yet' required />
                                             </div>
                                         </div>
                                         <hr>
@@ -191,10 +190,9 @@
                                                 <p class="mb-0">Address</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <input v-if="clientInfo.address == null" type="text"
-                                                       class="text-muted mb-0"
-                                                       placeholder='no address registered yet' required/>
-                                                <input v-else v-model="addressModel" type="text" class="text-muted mb-0"/>
+                                                <input v-if='clientInfo.address != null || clientInfo.address != "" ' type="text"
+                                                       class="text-muted mb-0" v-model="addressModel" required/>
+                                                <input v-else type="text" class="text-muted mb-0" placeholder='no address registered yet' required />
                                             </div>
                                         </div>
 

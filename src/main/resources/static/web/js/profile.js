@@ -16,7 +16,6 @@ var app = new Vue({
         getData: function(){
             axios.get("/api/clients/current/profile")
             .then((response) => {
-                //get client ifo
                 this.clientInfo = response.data;
                 if(this.clientInfo.address != null){
                     this.addressModel = this.clientInfo.address;
@@ -45,9 +44,9 @@ var app = new Vue({
         },
         saveData: function(){
             axios.post("/api/clients/current/profile",{password: this.currentPass, newPassword: this.newPass, address: this.addressModel, phone: this.phoneModel  })
-           .then(response => {
-           this.showEditProfile= false;
-           window.location.href = "/web/profile.html";
+           .then((response) => {
+               this.showEditProfile= false;
+               window.location.href = "/web/profile.html";
            })
             .catch((error) =>{
                 this.errorMsg = error.response.data;

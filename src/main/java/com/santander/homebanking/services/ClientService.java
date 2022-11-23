@@ -108,6 +108,16 @@ public class ClientService {
 
     public ArrayList<Object> updateDataClient(String email,ClientUpdateDTO clientUpdateDTO){
         Client client = clientRepository.findByEmail(email).orElse(null);
+        Client sessionClient = (Client) session.getAttribute("client");
+        if(client.getEmail() != sessionClient.getEmail()){
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.updateData.wrongClient"), 403));
+        }
+        if(client.getPassword() == clientUpdateDTO.getPassword()){
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.updateData.equalsPass"), 403));
+        }
+        if(clientUpdateDTO == null){
+            return new ArrayList<>(Arrays.asList(1,messageService.getMessage("general.missingData"), 403));
+        }
         Boolean pass = passwordEncoder.matches(clientUpdateDTO.getPassword(), client.getPassword());
         if (!pass){
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.updateData.passWrong"), 403));
