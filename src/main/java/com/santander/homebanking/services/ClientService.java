@@ -108,8 +108,8 @@ public class ClientService {
 
     public ArrayList<Object> updateDataClient(String email,ClientUpdateDTO clientUpdateDTO){
         Client client = clientRepository.findByEmail(email).orElse(null);
-        Client sessionClient = (Client) session.getAttribute("client");
-        if(client.getEmail() != sessionClient.getEmail()){
+       // Client sessionClient = (Client) session.getAttribute("client");
+        if(client.getEmail() ==null){
             return new ArrayList<>(Arrays.asList(1,messageService.getMessage("cliente.updateData.wrongClient"), 403));
         }
         if(client.getPassword() == clientUpdateDTO.getPassword()){
